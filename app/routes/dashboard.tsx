@@ -12,6 +12,9 @@ import {
   Heart,
   ChevronDown,
   ArrowRight,
+  Mountain,
+  Footprints,
+  Award,
 } from "lucide-react";
 import { supabase } from "~/lib/supabase";
 import { ProtectedRoute } from "~/components/ProtectedRoute";
@@ -96,9 +99,9 @@ function StarRating({ value }: { value: number }) {
 }
 
 const stats = [
-  { label: "Trails Completed", value: "12" },
-  { label: "Miles Hiked", value: "48.3" },
-  { label: "Badges Earned", value: "5" },
+  { label: "Trails Completed", value: "12", icon: Footprints, color: "text-primary" },
+  { label: "Miles Hiked", value: "48.3", icon: Mountain, color: "text-primary" },
+  { label: "Badges Earned", value: "5", icon: Award, color: "text-primary" },
 ];
 
 export default function Dashboard() {
@@ -155,27 +158,84 @@ export default function Dashboard() {
             <div className="max-w-5xl mx-auto flex flex-col gap-8">
 
               {/* Welcome banner */}
-              <div className="bg-primary text-primary-foreground rounded-xl px-5 py-6">
-                <p className="text-sm opacity-80 mb-1">Welcome back,</p>
-                <h1 className="text-xl font-bold truncate">
-                  {user.user_metadata?.full_name ?? user.email}
-                </h1>
-                <p className="text-sm opacity-80 mt-1">
-                  Ready for your next adventure?
-                </p>
+              <div
+                className="relative overflow-hidden rounded-2xl px-6 py-7 shadow-lg"
+                style={{ background: "linear-gradient(135deg, var(--primary) 0%, oklch(0.40 0.21 285) 100%)" }}
+              >
+                {/* Abstract mountain landscape */}
+                <svg
+                  className="pointer-events-none absolute inset-0 w-full h-full"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 800 180"
+                  preserveAspectRatio="xMidYMid slice"
+                  aria-hidden="true"
+                >
+                  {/* Distant peaks */}
+                  <path
+                    d="M0,180 L0,90 Q100,30 200,80 Q300,130 400,40 Q500,-10 600,70 Q700,130 800,50 L800,180 Z"
+                    fill="white"
+                    fillOpacity="0.06"
+                  />
+                  {/* Mid-range peaks */}
+                  <path
+                    d="M0,180 L0,115 Q80,75 180,110 Q280,145 380,80 Q460,30 560,100 Q660,150 800,95 L800,180 Z"
+                    fill="white"
+                    fillOpacity="0.09"
+                  />
+                  {/* Foreground ridge */}
+                  <path
+                    d="M0,180 L0,148 Q100,122 200,144 Q320,165 420,122 Q510,82 580,132 Q680,168 800,136 L800,180 Z"
+                    fill="white"
+                    fillOpacity="0.14"
+                  />
+                </svg>
+
+                {/* Decorative blurred blobs */}
+                <div className="pointer-events-none absolute -top-6 -right-6 w-36 h-36 rounded-full bg-white/10 blur-2xl" />
+                <div className="pointer-events-none absolute bottom-0 left-1/2 w-48 h-20 rounded-full bg-white/5 blur-3xl" />
+
+                <div className="relative">
+                  <p className="text-xs font-medium uppercase tracking-widest text-primary-foreground/60 mb-2">
+                    Welcome back
+                  </p>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-primary-foreground leading-tight truncate">
+                    {user.user_metadata?.full_name ?? user.email}
+                  </h1>
+                  <p className="mt-2 text-sm text-primary-foreground/75">
+                    Ready for your next adventure? 🏔️
+                  </p>
+
+                  <div className="mt-5 flex gap-2">
+                    <button className="text-xs font-semibold bg-primary-foreground text-primary px-4 py-2 rounded-lg hover:opacity-90 transition-opacity cursor-pointer">
+                      Find a Trail
+                    </button>
+                    <button className="text-xs font-semibold border border-primary-foreground/30 text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary-foreground/10 transition-colors cursor-pointer">
+                      View Progress
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-3">
-                {stats.map((s) => (
-                  <div
-                    key={s.label}
-                    className="border border-border rounded-xl p-4 bg-card text-center shadow-sm"
-                  >
-                    <p className="text-2xl font-bold text-primary">{s.value}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{s.label}</p>
-                  </div>
-                ))}
+                {stats.map((s) => {
+                  const Icon = s.icon;
+                  return (
+                    <div
+                      key={s.label}
+                      className="border border-border rounded-xl p-4 bg-card text-center shadow-sm hover:shadow-md transition-shadow"
+                    >
+                      
+                      <p className="text-2xl font-bold text-primary leading-none">{s.value}</p>
+                      <p className="text-xs text-muted-foreground mt-1.5 leading-tight">{s.label}</p>
+                      <div className="flex justify-center mt-2">
+                        <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Icon className={`w-4 h-4 ${s.color}`} />
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Recent Trails */}

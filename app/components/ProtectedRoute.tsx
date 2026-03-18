@@ -16,7 +16,7 @@ const AUTH_GUARD_DISABLED =
 const DEV_MOCK_USER = {
   id: "dev-user",
   email: "dev@trailquest.local",
-  user_metadata: { full_name: "Dev User" },
+  user_metadata: { full_name: "Kingsley" },
 } as unknown as User;
 // ─────────────────────────────────────────────────────────────────────────────
 
