@@ -38,7 +38,7 @@ type DifficultyFilter = "All" | "Easy" | "Moderate" | "Hard";
 type TypeFilter = "All" | "Loop" | "Out & Back" | "Point to Point";
 type SortKey = "rating" | "distance" | "name";
 
-// ─── Helpers ───────────────────────────────────────────────────────────────
+// ─── Constants ─────────────────────────────────────────────────────────────
 
 const DIFFICULTY_FILTERS: DifficultyFilter[] = ["All", "Easy", "Moderate", "Hard"];
 const TYPE_FILTERS: TypeFilter[] = ["All", "Loop", "Out & Back", "Point to Point"];
@@ -48,7 +48,7 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: "name", label: "Name" },
 ];
 
-const difficultyBorder: Record<string, string> = {
+const DIFFICULTY_BORDER: Record<string, string> = {
   Easy: "border-l-emerald-500",
   Moderate: "border-l-primary",
   Hard: "border-l-rose-500",
@@ -60,21 +60,44 @@ function parseDistance(d: string) {
 
 function StarRow({ value }: { value: number }) {
   return (
-    <span className="flex items-center gap-0.5">
+    <span className="flex items-center gap-1">
       {[1, 2, 3, 4, 5].map((i) => (
         <Star
           key={i}
           className={`w-3 h-3 ${
             i <= Math.round(value)
               ? "fill-amber-400 text-amber-400"
-              : "text-muted-foreground/30"
+              : "text-muted-foreground/20"
           }`}
         />
       ))}
-      <span className="ml-1 text-xs text-muted-foreground">{value}</span>
+      <span className="text-xs font-medium text-foreground">{value}</span>
     </span>
   );
 }
+
+// ─── Trail Images ────────────────────────────────────────────────────────────
+
+const trailImages: Record<string, string> = {
+  "Pine Ridge Loop":
+    "https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=600&q=80",
+  "Summit Crest Trail":
+    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
+  "Meadow Walk":
+    "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=600&q=80",
+  "Canyon Falls Path":
+    "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=600&q=80",
+  "Ridgeline Traverse":
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80",
+  "Lakeside Stroll":
+    "https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?auto=format&fit=crop&w=600&q=80",
+  "Granite Dome Circuit":
+    "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=600&q=80",
+  "Highland Moor Path":
+    "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80",
+  "Deadwood Ravine":
+    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80",
+};
 
 // ─── Trail Card ────────────────────────────────────────────────────────────
 
@@ -86,55 +109,76 @@ function TrailCard({
   onSelect: (t: Trail) => void;
 }) {
   const cfg = difficultyConfig[trail.difficulty];
+  const imgSrc = trailImages[trail.name];
+
   return (
     <button
       onClick={() => onSelect(trail)}
-      className={`text-left border border-border border-l-4 ${difficultyBorder[trail.difficulty]} rounded-xl p-4 flex flex-col gap-3 bg-card shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group focus-visible:outline-2 focus-visible:outline-ring`}
+      className={`w-full text-left border border-border border-l-4 ${DIFFICULTY_BORDER[trail.difficulty]} rounded-xl overflow-hidden flex flex-col bg-card shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer group focus-visible:outline-2 focus-visible:outline-ring`}
     >
-      {/* Header */}
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <p className="font-semibold text-card-foreground leading-snug group-hover:text-primary transition-colors truncate">
-            {trail.name}
-          </p>
-          <p className="text-xs text-primary mt-0.5 flex items-center gap-1 truncate">
-            <MapPin className="w-3 h-3 shrink-0" />
-            {trail.location}
-          </p>
-        </div>
-        <span
-          className={`shrink-0 text-xs font-medium px-2 py-1 rounded-full ${cfg.badge}`}
-        >
+      {/* Photo */}
+      <div className="relative w-full h-40 overflow-hidden bg-muted shrink-0">
+        {imgSrc ? (
+          <img
+            src={imgSrc}
+            alt={trail.name}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+            }}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <Mountain className="w-10 h-10 text-muted-foreground/30" />
+          </div>
+        )}
+        {/* Gradient overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        <span className={`absolute top-2.5 right-2.5 text-xs font-semibold px-2.5 py-1 rounded-full shadow ${cfg.badge}`}>
           {trail.difficulty}
         </span>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-1 text-xs text-muted-foreground border-t border-border pt-3">
-        <span className="flex flex-col items-center gap-0.5">
-          <Mountain className="w-3.5 h-3.5 text-primary/70" />
-          <span className="font-medium text-foreground text-[11px]">{trail.distance}</span>
-          <span className="text-[10px]">distance</span>
-        </span>
-        <span className="flex flex-col items-center gap-0.5 border-x border-border">
-          <Clock className="w-3.5 h-3.5 text-primary/70" />
-          <span className="font-medium text-foreground text-[11px]">{trail.duration}</span>
-          <span className="text-[10px]">duration</span>
-        </span>
-        <span className="flex flex-col items-center gap-0.5">
-          <TrendingUp className="w-3.5 h-3.5 text-primary/70" />
-          <span className="font-medium text-foreground text-[11px]">{trail.elevation}</span>
-          <span className="text-[10px]">elevation</span>
-        </span>
-      </div>
+      {/* Content */}
+      <div className="p-4 flex flex-col gap-3 flex-1">
+        {/* Trail name & location */}
+        <div className="min-w-0">
+          <p className="font-semibold text-card-foreground leading-snug group-hover:text-primary transition-colors truncate">
+            {trail.name}
+          </p>
+          <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1 truncate">
+            <MapPin className="w-3 h-3 shrink-0 text-primary" />
+            {trail.location}
+          </p>
+        </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between">
-        <StarRow value={trail.rating} />
-        <span className="text-xs text-muted-foreground flex items-center gap-1">
-          <Route className="w-3 h-3" />
-          {trail.type}
-        </span>
+        {/* Stats */}
+        <div className="grid grid-cols-3 text-xs border-t border-border pt-3">
+          <span className="flex flex-col items-center gap-1">
+            <Mountain className="w-3.5 h-3.5 text-primary/70" />
+            <span className="font-semibold text-foreground">{trail.distance}</span>
+            <span className="text-muted-foreground text-[10px] uppercase tracking-wide">dist</span>
+          </span>
+          <span className="flex flex-col items-center gap-1 border-x border-border">
+            <Clock className="w-3.5 h-3.5 text-primary/70" />
+            <span className="font-semibold text-foreground">{trail.duration}</span>
+            <span className="text-muted-foreground text-[10px] uppercase tracking-wide">time</span>
+          </span>
+          <span className="flex flex-col items-center gap-1">
+            <TrendingUp className="w-3.5 h-3.5 text-primary/70" />
+            <span className="font-semibold text-foreground">{trail.elevation}</span>
+            <span className="text-muted-foreground text-[10px] uppercase tracking-wide">elev</span>
+          </span>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-auto flex items-center justify-between pt-1">
+          <StarRow value={trail.rating} />
+          <span className="text-xs text-muted-foreground flex items-center gap-1">
+            <Route className="w-3 h-3" />
+            {trail.type}
+          </span>
+        </div>
       </div>
     </button>
   );
@@ -221,23 +265,25 @@ export default function Trails() {
       <Navbar user={user} activePath="/trails" />
 
       {/* ── Page Header ─────────────────────────────────────────────────── */}
-      <section className="border-b border-border bg-card/40 px-4 py-8">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-1">
-            Trail Directory
-          </p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-1">
-            Explore Trails
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            {allTrails.length} trails across the country — find your next adventure.
+      <section className=" px-4 py-6">
+        <div className="max-w-5xl mx-auto flex items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-1">
+              Trail Directory
+            </p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground leading-tight">
+              Explore Trails
+            </h1>
+          </div>
+          <p className="text-sm text-muted-foreground shrink-0 hidden sm:block">
+            {allTrails.length} trails nationwide
           </p>
         </div>
       </section>
 
       {/* ── Search & Filters ─────────────────────────────────────────────── */}
-      <div className="sticky top-[57px] z-40 border-b border-border bg-background/95 backdrop-blur-sm px-4 py-3">
-        <div className="max-w-5xl mx-auto flex flex-col gap-3">
+      <div className="sticky top-[57px] z-40 bg-background/95 backdrop-blur-sm px-4 py-3">
+        <div className="max-w-5xl mx-auto flex flex-col gap-2.5">
 
           {/* Search row */}
           <div className="flex gap-2">
@@ -248,7 +294,7 @@ export default function Trails() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search by name or location…"
-                className="w-full pl-9 pr-9 py-2 text-sm bg-card border border-border rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full pl-9 pr-9 py-2 text-sm bg-card border border-border rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-shadow"
               />
               {query && (
                 <button
@@ -266,25 +312,18 @@ export default function Trails() {
               onClick={() => setFiltersOpen((v) => !v)}
               className={`sm:hidden flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg border transition-colors cursor-pointer ${
                 hasActiveFilters
-                  ? "border-primary bg-secondary text-primary"
+                  ? "border-primary bg-primary/10 text-primary"
                   : "border-border bg-card text-muted-foreground hover:text-foreground"
               }`}
               aria-label="Toggle filters"
             >
               <SlidersHorizontal className="w-4 h-4" />
-              {hasActiveFilters && (
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              )}
+              {hasActiveFilters && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
             </button>
           </div>
 
-          {/* Filter chips row — always visible on sm+, collapsible on mobile */}
-          <div
-            className={`flex flex-wrap items-center gap-2 ${
-              filtersOpen ? "flex" : "hidden sm:flex"
-            }`}
-          >
-            {/* Difficulty chips */}
+          {/* Filter chips — always visible on sm+, toggled on mobile */}
+          <div className={`flex flex-wrap items-center gap-2 ${filtersOpen ? "flex" : "hidden sm:flex"}`}>
             <div className="flex items-center gap-1.5 flex-wrap">
               {DIFFICULTY_FILTERS.map((d) => (
                 <button
@@ -293,7 +332,7 @@ export default function Trails() {
                   className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-all cursor-pointer ${
                     difficulty === d
                       ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-card text-muted-foreground border-border hover:border-primary/50 hover:text-foreground"
+                      : "bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-foreground"
                   }`}
                 >
                   {d}
@@ -301,9 +340,8 @@ export default function Trails() {
               ))}
             </div>
 
-            <div className="w-px h-4 bg-border hidden sm:block" />
+            <div className="w-px h-3 bg-border/40 hidden sm:block" />
 
-            {/* Type chips */}
             <div className="flex items-center gap-1.5 flex-wrap">
               {TYPE_FILTERS.map((t) => (
                 <button
@@ -312,7 +350,7 @@ export default function Trails() {
                   className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-all cursor-pointer ${
                     trailType === t
                       ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-card text-muted-foreground border-border hover:border-primary/50 hover:text-foreground"
+                      : "bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-foreground"
                   }`}
                 >
                   {t}
@@ -320,11 +358,10 @@ export default function Trails() {
               ))}
             </div>
 
-            {/* Clear filters */}
             {hasActiveFilters && (
               <button
                 onClick={clearAll}
-                className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 cursor-pointer ml-auto"
+                className="ml-auto flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 <X className="w-3 h-3" />
                 Clear
@@ -348,15 +385,15 @@ export default function Trails() {
             {/* Sort */}
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground hidden sm:inline">Sort:</span>
-              <div className="flex gap-1">
+              <div className="flex bg-card border border-border rounded-lg overflow-hidden">
                 {SORT_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
                     onClick={() => setSort(opt.value)}
-                    className={`text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer ${
+                    className={`text-xs font-medium px-3 py-1.5 transition-colors cursor-pointer ${
                       sort === opt.value
-                        ? "bg-secondary text-secondary-foreground"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
                     }`}
                   >
                     {opt.label}
@@ -370,7 +407,7 @@ export default function Trails() {
           {filtered.length === 0 ? (
             <EmptyState onClear={clearAll} />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {filtered.map((trail) => (
                 <TrailCard key={trail.name} trail={trail} onSelect={setActiveTrail} />
               ))}
