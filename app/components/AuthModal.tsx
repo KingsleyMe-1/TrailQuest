@@ -26,7 +26,6 @@ export function AuthModal({
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  // Reset form whenever modal opens or mode changes
   useEffect(() => {
     setEmail("");
     setPassword("");
@@ -35,7 +34,6 @@ export function AuthModal({
     setSuccessMsg(null);
   }, [mode, isOpen]);
 
-  // Close on Escape key
   useEffect(() => {
     if (!isOpen) return;
     const handler = (e: KeyboardEvent) => {
@@ -110,7 +108,7 @@ export function AuthModal({
         className="w-full max-w-sm bg-card border border-border rounded-xl p-6 shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
+
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-bold text-card-foreground">
             {mode === "signup" ? "Create an account" : "Welcome back"}

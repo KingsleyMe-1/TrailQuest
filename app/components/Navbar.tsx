@@ -2,10 +2,10 @@ import type { User } from "@supabase/supabase-js";
 import { ProfileMenu } from "~/components/ProfileMenu";
 
 const NAV_LINKS = [
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Trails", href: "/trails" },
-  { label: "Map", href: "#" },
-  { label: "Community", href: "#" },
+  { label: "Dashboard", href: "/dashboard", requiresAuth: true },
+  { label: "Trails", href: "/trails", requiresAuth: false },
+  { label: "Map", href: "#", requiresAuth: false },
+  { label: "Community", href: "#", requiresAuth: true },
 ];
 
 type Props = {
@@ -27,7 +27,7 @@ export default function Navbar({ activePath, user, onSignUpClick }: Props) {
         </a>
 
         <nav className="hidden sm:flex items-center gap-6 text-sm text-muted-foreground">
-          {NAV_LINKS.map(({ label, href }) => (
+          {NAV_LINKS.filter(({ requiresAuth }) => !requiresAuth || !!user).map(({ label, href }) => (
             <a
               key={label}
               href={href}

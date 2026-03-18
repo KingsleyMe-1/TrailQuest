@@ -276,7 +276,6 @@ export default function TrailDetailModal({ trail, onClose }: Props) {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* ── Header: gradient + mountain silhouette ── */}
         <div
           className="relative flex-shrink-0 h-36 overflow-hidden"
           style={{
