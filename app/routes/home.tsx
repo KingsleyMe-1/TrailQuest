@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { useNavigate } from "react-router";
+import { MapPin, Star } from "lucide-react";
 import type { Route } from "./+types/home";
 import { supabase } from "~/lib/supabase";
 import { AuthModal, type AuthMode } from "~/components/AuthModal";
+import { ProfileMenu } from "~/components/ProfileMenu";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -73,10 +75,6 @@ export default function Home() {
     setAuthMode("signup");
     setModalOpen(true);
   }
-
-  async function handleSignOut() {
-    await supabase.auth.signOut();
-  }
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
       <AuthModal
@@ -103,17 +101,7 @@ export default function Home() {
             <a href="#" className="hover:text-foreground transition-colors">Community</a>
           </nav>
           {user ? (
-            <div className="flex items-center gap-3">
-              <span className="hidden sm:block text-xs text-muted-foreground truncate max-w-[140px]">
-                {user.email}
-              </span>
-              <button
-                onClick={handleSignOut}
-                className="text-sm font-medium px-4 py-2 rounded-lg border border-border hover:bg-secondary transition-colors cursor-pointer"
-              >
-                Sign Out
-              </button>
-            </div>
+            <ProfileMenu user={user} />
           ) : (
             <button
               onClick={openSignUp}
@@ -172,8 +160,8 @@ export default function Home() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>📍 {trail.distance}</span>
-                  <span>★ {trail.rating}</span>
+                  <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {trail.distance}</span>
+                  <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5" /> {trail.rating}</span>
                 </div>
                 <button className="w-full border border-border text-primary text-sm font-medium py-1.5 rounded-lg hover:bg-secondary transition-colors cursor-pointer">
                   View Trail
