@@ -3,7 +3,7 @@ import { ProfileMenu } from "~/components/ProfileMenu";
 
 const NAV_LINKS = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Trails", href: "#" },
+  { label: "Trails", href: "/trails" },
   { label: "Map", href: "#" },
   { label: "Community", href: "#" },
 ];
