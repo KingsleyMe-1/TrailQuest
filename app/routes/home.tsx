@@ -1,4 +1,9 @@
+import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
+import { useNavigate } from "react-router";
 import type { Route } from "./+types/home";
+import { supabase } from "~/lib/supabase";
+import { AuthModal, type AuthMode } from "~/components/AuthModal";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -42,8 +47,49 @@ const difficultyStyle: Record<string, string> = {
 };
 
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<AuthMode>("signup");
+  const navigate = useNavigate();
+
+  // Sync auth state from Supabase on the client
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      const sessionUser = data.session?.user ?? null;
+      setUser(sessionUser);
+      if (sessionUser) navigate("/dashboard", { replace: true });
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  function openSignUp() {
+    setAuthMode("signup");
+    setModalOpen(true);
+  }
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+  }
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
+      <AuthModal
+        isOpen={modalOpen}
+        mode={authMode}
+        onClose={() => setModalOpen(false)}
+        onSwitchMode={setAuthMode}
+        onAuthSuccess={(loggedInUser) => {
+          setUser(loggedInUser);
+          navigate("/dashboard", { replace: true });
+        }}
+      />
+
       {/* Navbar */}
       <header className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -56,9 +102,26 @@ export default function Home() {
             <a href="#" className="hover:text-foreground transition-colors">Map</a>
             <a href="#" className="hover:text-foreground transition-colors">Community</a>
           </nav>
-          <button className="bg-primary text-primary-foreground text-sm font-medium px-4 py-2 rounded-lg hover:opacity-90 transition-opacity cursor-pointer">
-            Sign Up
-          </button>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:block text-xs text-muted-foreground truncate max-w-[140px]">
+                {user.email}
+              </span>
+              <button
+                onClick={handleSignOut}
+                className="text-sm font-medium px-4 py-2 rounded-lg border border-border hover:bg-secondary transition-colors cursor-pointer"
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={openSignUp}
+              className="bg-primary text-primary-foreground text-sm font-medium px-4 py-2 rounded-lg hover:opacity-90 transition-opacity cursor-pointer"
+            >
+              Sign Up
+            </button>
+          )}
         </div>
       </header>
 
