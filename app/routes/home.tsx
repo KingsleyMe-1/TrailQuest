@@ -1,4 +1,11 @@
+import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
+import { useNavigate } from "react-router";
+import { MapPin, Star } from "lucide-react";
 import type { Route } from "./+types/home";
+import { supabase } from "~/lib/supabase";
+import { AuthModal, type AuthMode } from "~/components/AuthModal";
+import { ProfileMenu } from "~/components/ProfileMenu";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -42,8 +49,45 @@ const difficultyStyle: Record<string, string> = {
 };
 
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<AuthMode>("signup");
+  const navigate = useNavigate();
+
+  // Sync auth state from Supabase on the client
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      const sessionUser = data.session?.user ?? null;
+      setUser(sessionUser);
+      if (sessionUser) navigate("/dashboard", { replace: true });
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  function openSignUp() {
+    setAuthMode("signup");
+    setModalOpen(true);
+  }
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
+      <AuthModal
+        isOpen={modalOpen}
+        mode={authMode}
+        onClose={() => setModalOpen(false)}
+        onSwitchMode={setAuthMode}
+        onAuthSuccess={(loggedInUser) => {
+          setUser(loggedInUser);
+          navigate("/dashboard", { replace: true });
+        }}
+      />
+
       {/* Navbar */}
       <header className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -56,9 +100,16 @@ export default function Home() {
             <a href="#" className="hover:text-foreground transition-colors">Map</a>
             <a href="#" className="hover:text-foreground transition-colors">Community</a>
           </nav>
-          <button className="bg-primary text-primary-foreground text-sm font-medium px-4 py-2 rounded-lg hover:opacity-90 transition-opacity cursor-pointer">
-            Sign Up
-          </button>
+          {user ? (
+            <ProfileMenu user={user} />
+          ) : (
+            <button
+              onClick={openSignUp}
+              className="bg-primary text-primary-foreground text-sm font-medium px-4 py-2 rounded-lg hover:opacity-90 transition-opacity cursor-pointer"
+            >
+              Sign Up
+            </button>
+          )}
         </div>
       </header>
 
@@ -109,8 +160,8 @@ export default function Home() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>📍 {trail.distance}</span>
-                  <span>★ {trail.rating}</span>
+                  <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {trail.distance}</span>
+                  <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5" /> {trail.rating}</span>
                 </div>
                 <button className="w-full border border-border text-primary text-sm font-medium py-1.5 rounded-lg hover:bg-secondary transition-colors cursor-pointer">
                   View Trail
