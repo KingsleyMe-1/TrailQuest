@@ -1,10 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import type { Route } from "./+types/dashboard";
 import {
-  MapIcon,
   MapPin,
-  Users,
   Star,
   Calendar,
   Clock,
@@ -16,9 +13,7 @@ import {
   Footprints,
   Award,
 } from "lucide-react";
-import { supabase } from "~/lib/supabase";
 import { ProtectedRoute } from "~/components/ProtectedRoute";
-import { ProfileMenu } from "~/components/ProfileMenu";
 import TrailDetailModal, { type Trail, difficultyConfig } from "~/components/TrailDetailModal";
 import { recentTrails } from "~/constants/trails";
 import Navbar from "~/components/Navbar";
@@ -50,19 +45,15 @@ function StarRating({ value }: { value: number }) {
 }
 
 const stats = [
-  { label: "Trails Completed", value: "12", icon: Footprints, color: "text-primary" },
-  { label: "Miles Hiked", value: "48.3", icon: Mountain, color: "text-primary" },
-  { label: "Badges Earned", value: "5", icon: Award, color: "text-primary" },
+  { label: "Trails Completed", value: "12" },
+  { label: "Miles Hiked", value: "48.3" },
+  { label: "Badges Earned", value: "5" },
 ];
 
 export default function Dashboard() {
-  const navigate = useNavigate();
   const [expandedTrail, setExpandedTrail] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [activeTrail, setActiveTrail] = useState<Trail | null>(null);
-
-  // Sign out is handled inside ProfileMenu; navigate kept for potential future use
-  void navigate;
 
   function toggleFavorite(name: string, e: React.MouseEvent) {
     e.stopPropagation();
@@ -140,21 +131,16 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Stats */}
               <div className="grid grid-cols-3 gap-3">
-                {stats.map((s) => {
-                  const Icon = s.icon;
-                  return (
-                    <div
-                      key={s.label}
-                      className="border border-border rounded-xl p-4 bg-card text-center shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      
-                      <p className="text-2xl font-bold text-primary leading-none">{s.value}</p>
-                      <p className="text-xs text-muted-foreground mt-1.5 leading-tight">{s.label}</p>
-                    </div>
-                  );
-                })}
+                {stats.map((s) => (
+                  <div
+                    key={s.label}
+                    className="border border-border rounded-xl p-4 bg-card text-center shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <p className="text-2xl font-bold text-primary leading-none">{s.value}</p>
+                    <p className="text-xs text-muted-foreground mt-1.5 leading-tight">{s.label}</p>
+                  </div>
+                ))}
               </div>
 
               {/* Recent Trails */}

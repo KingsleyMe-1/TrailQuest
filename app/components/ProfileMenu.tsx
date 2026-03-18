@@ -40,7 +40,6 @@ export function ProfileMenu({ user }: ProfileMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleOutsideClick(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -51,7 +50,6 @@ export function ProfileMenu({ user }: ProfileMenuProps) {
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [open]);
 
-  // Close on Escape
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
@@ -104,7 +102,6 @@ export function ProfileMenu({ user }: ProfileMenuProps) {
       );
     } finally {
       setUploading(false);
-      // Reset input so the same file can be reselected if needed
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
   }
@@ -120,7 +117,6 @@ export function ProfileMenu({ user }: ProfileMenuProps) {
 
   return (
     <div className="relative" ref={menuRef}>
-      {/* Avatar button */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}

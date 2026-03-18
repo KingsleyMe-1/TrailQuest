@@ -116,7 +116,6 @@ function TrailCard({
       onClick={() => onSelect(trail)}
       className={`w-full text-left border border-border border-l-4 ${DIFFICULTY_BORDER[trail.difficulty]} rounded-xl overflow-hidden flex flex-col bg-card shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer group focus-visible:outline-2 focus-visible:outline-ring`}
     >
-      {/* Photo */}
       <div className="relative w-full h-40 overflow-hidden bg-muted shrink-0">
         {imgSrc ? (
           <img
@@ -132,16 +131,13 @@ function TrailCard({
             <Mountain className="w-10 h-10 text-muted-foreground/30" />
           </div>
         )}
-        {/* Gradient overlay for readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
         <span className={`absolute top-2.5 right-2.5 text-xs font-semibold px-2.5 py-1 rounded-full shadow ${cfg.badge}`}>
           {trail.difficulty}
         </span>
       </div>
 
-      {/* Content */}
       <div className="p-4 flex flex-col gap-3 flex-1">
-        {/* Trail name & location */}
         <div className="min-w-0">
           <p className="font-semibold text-card-foreground leading-snug group-hover:text-primary transition-colors truncate">
             {trail.name}

@@ -7,28 +7,10 @@ interface ProtectedRouteProps {
   children: (user: User) => React.ReactNode;
 }
 
-// ─── Dev bypass ──────────────────────────────────────────────────────────────
-// Set VITE_DISABLE_AUTH_GUARD=true in .env to skip auth checks locally.
-// Remove or set to false before deploying to production.
-const AUTH_GUARD_DISABLED =
-  import.meta.env.VITE_DISABLE_AUTH_GUARD === "true";
-
-const DEV_MOCK_USER = {
-  id: "dev-user",
-  email: "dev@trailquest.local",
-  user_metadata: { full_name: "Kingsley" },
-} as unknown as User;
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [checking, setChecking] = useState(true);
-
-  // Bypass: skip Supabase check entirely in local dev
-  if (AUTH_GUARD_DISABLED) {
-    return <>{children(DEV_MOCK_USER)}</>;
-  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {

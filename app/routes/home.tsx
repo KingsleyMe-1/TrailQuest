@@ -5,7 +5,6 @@ import { MapPin, Star } from "lucide-react";
 import type { Route } from "./+types/home";
 import { supabase } from "~/lib/supabase";
 import { AuthModal, type AuthMode } from "~/components/AuthModal";
-import { ProfileMenu } from "~/components/ProfileMenu";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
 
@@ -56,7 +55,6 @@ export default function Home() {
   const [authMode, setAuthMode] = useState<AuthMode>("signup");
   const navigate = useNavigate();
 
-  // Sync auth state from Supabase on the client
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       const sessionUser = data.session?.user ?? null;
@@ -90,7 +88,6 @@ export default function Home() {
         }}
       />
 
-      {/* Navbar */}
       <Navbar user={user} onSignUpClick={openSignUp} />
 
       {/* Hero */}
@@ -152,7 +149,6 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );
