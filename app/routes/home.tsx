@@ -6,6 +6,8 @@ import type { Route } from "./+types/home";
 import { supabase } from "~/lib/supabase";
 import { AuthModal, type AuthMode } from "~/components/AuthModal";
 import { ProfileMenu } from "~/components/ProfileMenu";
+import Navbar from "~/components/Navbar";
+import Footer from "~/components/Footer";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -89,29 +91,7 @@ export default function Home() {
       />
 
       {/* Navbar */}
-      <header className="sticky top-0 z-50 bg-background border-b border-border">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <span className="text-lg font-bold tracking-tight">
-            <span className="font-normal">Trail</span>
-            <span className="text-primary">Quest</span>
-          </span>
-          <nav className="hidden sm:flex items-center gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-foreground transition-colors">Trails</a>
-            <a href="#" className="hover:text-foreground transition-colors">Map</a>
-            <a href="#" className="hover:text-foreground transition-colors">Community</a>
-          </nav>
-          {user ? (
-            <ProfileMenu user={user} />
-          ) : (
-            <button
-              onClick={openSignUp}
-              className="bg-primary text-primary-foreground text-sm font-medium px-4 py-2 rounded-lg hover:opacity-90 transition-opacity cursor-pointer"
-            >
-              Sign Up
-            </button>
-          )}
-        </div>
-      </header>
+      <Navbar user={user} onSignUpClick={openSignUp} />
 
       {/* Hero */}
       <section className="bg-primary text-primary-foreground px-4 py-16 text-center">
@@ -152,7 +132,7 @@ export default function Home() {
                     <p className="text-xs text-primary mt-0.5">{trail.location}</p>
                   </div>
                   <span
-                    className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full ${
+                    className={`shrink-0 text-xs font-medium px-2 py-1 rounded-full ${
                       difficultyStyle[trail.difficulty]
                     }`}
                   >
@@ -173,9 +153,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border py-5 text-center text-xs text-muted-foreground">
-        © 2026 TrailQuest. All rights reserved.
-      </footer>
+      <Footer />
     </div>
   );
 }
