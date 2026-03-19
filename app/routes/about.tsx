@@ -2,31 +2,26 @@ import { useState, useEffect } from "react";
 import type { User } from "@supabase/supabase-js";
 import {
   Mountain,
-  Map,
   MapPin,
-  Users,
-  Trophy,
-  Shield,
-  Zap,
   Globe,
   Github,
   Twitter,
   Linkedin,
   Mail,
   Heart,
-  Code2,
-  Layers,
-  Database,
-  Palette,
-  Package,
-  Server,
   ChevronDown,
 } from "lucide-react";
 import type { Route } from "./+types/about";
 import { supabase } from "~/lib/supabase";
-import { AuthModal, type AuthMode } from "~/components/AuthModal";
-import Navbar from "~/components/Navbar";
-import Footer from "~/components/Footer";
+import { AuthModal, type AuthMode } from "~/components/auth/AuthModal";
+import Navbar from "~/components/layout/Navbar";
+import Footer from "~/components/layout/Footer";
+import {
+  ABOUT_FAQS as FAQS,
+  ABOUT_FEATURES as FEATURES,
+  ABOUT_TECH_STACK as TECH_STACK,
+  ABOUT_TIMELINE as TIMELINE,
+} from "~/constants/about";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -34,163 +29,10 @@ export function meta({}: Route.MetaArgs) {
     {
       name: "description",
       content:
-        "Learn about TrailQuest — the story, the developer, and the technology stack behind the app.",
+        "Learn about TrailQuest - the story, the developer, and the technology stack behind the app.",
     },
   ];
 }
-
-const FEATURES = [
-  {
-    icon: Map,
-    title: "Trail Discovery",
-    description:
-      "Browse and filter hundreds of trails by difficulty, distance, type, and rating. Every trail is detailed with elevation profiles and waypoint highlights.",
-    color: "text-primary bg-primary/10",
-  },
-  {
-    icon: Trophy,
-    title: "Progress Tracking",
-    description:
-      "Log completed hikes, earn achievement badges, and watch your stats grow. Your personal dashboard keeps every adventure on record.",
-    color: "text-amber-500 bg-amber-500/10",
-  },
-  {
-    icon: Users,
-    title: "Community Groups",
-    description:
-      "Join groups that match your pace and passion — from beginner-friendly strolls to elite endurance challenges. Never hike alone.",
-    color: "text-emerald-500 bg-emerald-500/10",
-  },
-  {
-    icon: Mountain,
-    title: "Upcoming Hike Events",
-    description:
-      "Discover community-organised hike announcements, RSVP instantly, and stay in the loop with real-time spot availability.",
-    color: "text-sky-500 bg-sky-500/10",
-  },
-  {
-    icon: Shield,
-    title: "Secure & Private",
-    description:
-      "Authentication is handled by Supabase with row-level security. Your data belongs to you — always encrypted in transit and at rest.",
-    color: "text-violet-500 bg-violet-500/10",
-  },
-  {
-    icon: Zap,
-    title: "Blazing Fast",
-    description:
-      "Built with Vite and React Router v7 SSR for sub-second navigation. Optimised images, code-split routes, and minimal JavaScript on the wire.",
-    color: "text-rose-500 bg-rose-500/10",
-  },
-];
-
-const TECH_STACK = [
-  {
-    category: "Framework",
-    icon: Layers,
-    items: [
-      { name: "React 19", note: "UI rendering & state" },
-      { name: "React Router v7", note: "SSR + file-based routing" },
-      { name: "TypeScript 5", note: "Strict type safety" },
-    ],
-  },
-  {
-    category: "Styling",
-    icon: Palette,
-    items: [
-      { name: "Tailwind CSS 4", note: "Utility-first, oklch colors" },
-      { name: "CSS Custom Properties", note: "Themeable design tokens" },
-      { name: "Dark Mode", note: "Class-based, flash-free" },
-    ],
-  },
-  {
-    category: "Backend & Auth",
-    icon: Database,
-    items: [
-      { name: "Supabase", note: "Postgres + Auth + Storage" },
-      { name: "Row-Level Security", note: "Fine-grained data access" },
-      { name: "JWT Sessions", note: "Persistent auth across tabs" },
-    ],
-  },
-  {
-    category: "Build & Deploy",
-    icon: Server,
-    items: [
-      { name: "Vite 7", note: "HMR & optimised bundling" },
-      { name: "Docker", note: "Multi-stage production build" },
-      { name: "Vercel", note: "Edge deployment preset" },
-    ],
-  },
-  {
-    category: "UI Components",
-    icon: Package,
-    items: [
-      { name: "lucide-react", note: "Consistent icon set" },
-      { name: "Google Fonts", note: "Roboto, Playfair, Fira Code" },
-      { name: "Custom Components", note: "Zero external UI framework" },
-    ],
-  },
-  {
-    category: "Developer Tools",
-    icon: Code2,
-    items: [
-      { name: "ESLint + Prettier", note: "Code quality & formatting" },
-      { name: "tsconfig paths", note: "Clean ~ import aliases" },
-      { name: "vite-tsconfig-paths", note: "Path resolution plugin" },
-    ],
-  },
-];
-
-const TIMELINE = [
-  {
-    version: "v0.1",
-    date: "Jan 2026",
-    title: "Foundation",
-    description: "Project scaffolded with React Router v7, Supabase auth, and the base design system.",
-  },
-  {
-    version: "v0.2",
-    date: "Feb 2026",
-    title: "Trail Engine",
-    description: "Trail directory with search, filters, sorting, and the tabbed TrailDetailModal with SVG elevation chart.",
-  },
-  {
-    version: "v0.3",
-    date: "Mar 2026",
-    title: "Community & Polish",
-    description: "Community groups, hike announcements, responsive mobile drawer, dark mode, and avatar uploads.",
-  },
-  {
-    version: "v1.0",
-    date: "Coming Soon",
-    title: "Full Launch",
-    description: "Real-time activity feeds, map integration, challenge system, and native mobile app.",
-    upcoming: true,
-  },
-];
-
-const FAQS = [
-  {
-    question: "Is TrailQuest free to use?",
-    answer:
-      "Yes — TrailQuest is completely free for all core features: browsing trails, joining groups, and RSVPing to hike events. Premium tiers with offline maps and guided routes are planned for v1.0.",
-  },
-  {
-    question: "Can I contribute trail data?",
-    answer:
-      "Community-submitted trails are on the roadmap. Once the trail submission form ships you will be able to add GPS routes, photos, and conditions reports directly from the app.",
-  },
-  {
-    question: "How is my data stored?",
-    answer:
-      "All user data is stored in a Supabase Postgres database with row-level security. Passwords are never stored — Supabase handles authentication with JWT tokens. Avatar images are stored in Supabase Storage.",
-  },
-  {
-    question: "What platforms are supported?",
-    answer:
-      "TrailQuest is a responsive web app optimised for desktop and mobile browsers. A native iOS and Android app built with React Native is planned for the v1.0 launch.",
-  },
-];
 
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
@@ -258,7 +100,7 @@ export default function About() {
               <span className="text-primary">by a hiker.</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
-              TrailQuest started as a personal frustration — trail apps were cluttered, slow, and social features were an afterthought. This is the app I wanted to use.
+              TrailQuest started as a personal frustration - trail apps were cluttered, slow, and social features were an afterthought. This is the app I wanted to use.
             </p>
           </div>
         </section>
@@ -337,7 +179,7 @@ export default function About() {
                     {[
                       { num: "2+",  label: "Yrs Exp" },
                       { num: "5", label: "Projects" },
-                      { num: "∞",   label: "Coffees" },
+                      { num: "∞", label: "Coffees" },
                     ].map(({ num, label }) => (
                       <div
                         key={label}
@@ -371,7 +213,7 @@ export default function About() {
                     <div>
                       <h3 className="text-xl font-bold text-foreground">Kingsley J.</h3>
                       <p className="text-sm text-primary font-medium">Full-Stack Developer</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">Trail Enthusiast · Gamer  · Adrenaline Junkie</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Trail Enthusiast - Gamer - Adrenaline Junkie</p>
                     </div>
 
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -403,7 +245,7 @@ export default function About() {
                   <div className="md:col-span-3 flex flex-col gap-5 md:pt-4">
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       Passionate about building purposeful software and getting outside.
-                      TrailQuest is my attempt to merge both worlds — a fast, beautiful,
+                      TrailQuest is my attempt to merge both worlds - a fast, beautiful,
                       community-driven app for people who love the outdoors as much as
                       they love good UX.
                     </p>
@@ -521,7 +363,7 @@ export default function About() {
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold mb-3">The Journey</h2>
             <p className="text-muted-foreground text-sm max-w-md mx-auto">
-              From first commit to community launch — here's how TrailQuest evolved.
+              From first commit to community launch - here's how TrailQuest evolved.
             </p>
           </div>
 
@@ -603,3 +445,4 @@ export default function About() {
     </div>
   );
 }
+

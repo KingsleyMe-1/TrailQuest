@@ -14,12 +14,23 @@ import {
 import type { Route as RRRoute } from "./+types/trails";
 import { supabase } from "~/lib/supabase";
 import { allTrails } from "~/constants/trails";
-import Navbar from "~/components/Navbar";
-import Footer from "~/components/Footer";
-import TrailDetailModal, {
+import {
+  DIFFICULTY_FILTERS,
+  TYPE_FILTERS,
+  SORT_OPTIONS,
+  TRAIL_CARD_IMAGES,
+  TRAIL_DIFFICULTY_BORDER,
+  type DifficultyFilter,
+  type SortKey,
+  type TypeFilter,
+} from "~/constants/trails-page";
+import {
   type Trail,
-  difficultyConfig,
-} from "~/components/TrailDetailModal";
+  TRAIL_DIFFICULTY_CONFIG,
+} from "~/constants/trail-detail";
+import Navbar from "~/components/layout/Navbar";
+import Footer from "~/components/layout/Footer";
+import TrailDetailModal from "~/components/trails/TrailDetailModal";
 
 export function meta({}: RRRoute.MetaArgs) {
   return [
@@ -31,28 +42,6 @@ export function meta({}: RRRoute.MetaArgs) {
     },
   ];
 }
-
-// ─── Types ─────────────────────────────────────────────────────────────────
-
-type DifficultyFilter = "All" | "Easy" | "Moderate" | "Hard";
-type TypeFilter = "All" | "Loop" | "Out & Back" | "Point to Point";
-type SortKey = "rating" | "distance" | "name";
-
-// ─── Constants ─────────────────────────────────────────────────────────────
-
-const DIFFICULTY_FILTERS: DifficultyFilter[] = ["All", "Easy", "Moderate", "Hard"];
-const TYPE_FILTERS: TypeFilter[] = ["All", "Loop", "Out & Back", "Point to Point"];
-const SORT_OPTIONS: { value: SortKey; label: string }[] = [
-  { value: "rating", label: "Top Rated" },
-  { value: "distance", label: "Distance" },
-  { value: "name", label: "Name" },
-];
-
-const DIFFICULTY_BORDER: Record<string, string> = {
-  Easy: "border-l-emerald-500",
-  Moderate: "border-l-primary",
-  Hard: "border-l-rose-500",
-};
 
 function parseDistance(d: string) {
   return parseFloat(d.replace(/[^0-9.]/g, "")) || 0;
@@ -76,31 +65,6 @@ function StarRow({ value }: { value: number }) {
   );
 }
 
-// ─── Trail Images ────────────────────────────────────────────────────────────
-
-const trailImages: Record<string, string> = {
-  "Pine Ridge Loop":
-    "https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=600&q=80",
-  "Summit Crest Trail":
-    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
-  "Meadow Walk":
-    "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=600&q=80",
-  "Canyon Falls Path":
-    "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=600&q=80",
-  "Ridgeline Traverse":
-    "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80",
-  "Lakeside Stroll":
-    "https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?auto=format&fit=crop&w=600&q=80",
-  "Granite Dome Circuit":
-    "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=600&q=80",
-  "Highland Moor Path":
-    "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80",
-  "Deadwood Ravine":
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80",
-};
-
-// ─── Trail Card ────────────────────────────────────────────────────────────
-
 function TrailCard({
   trail,
   onSelect,
@@ -108,13 +72,13 @@ function TrailCard({
   trail: Trail;
   onSelect: (t: Trail) => void;
 }) {
-  const cfg = difficultyConfig[trail.difficulty];
-  const imgSrc = trailImages[trail.name];
+  const cfg = TRAIL_DIFFICULTY_CONFIG[trail.difficulty];
+  const imgSrc = TRAIL_CARD_IMAGES[trail.name];
 
   return (
     <button
       onClick={() => onSelect(trail)}
-      className={`w-full text-left border border-border border-l-4 ${DIFFICULTY_BORDER[trail.difficulty]} rounded-xl overflow-hidden flex flex-col bg-card shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer group focus-visible:outline-2 focus-visible:outline-ring`}
+      className={`w-full text-left border border-border border-l-4 ${TRAIL_DIFFICULTY_BORDER[trail.difficulty]} rounded-xl overflow-hidden flex flex-col bg-card shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer group focus-visible:outline-2 focus-visible:outline-ring`}
     >
       <div className="relative w-full h-40 overflow-hidden bg-muted shrink-0">
         {imgSrc ? (
@@ -148,7 +112,6 @@ function TrailCard({
           </p>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-3 text-xs border-t border-border pt-3">
           <span className="flex flex-col items-center gap-1">
             <Mountain className="w-3.5 h-3.5 text-primary/70" />
@@ -167,7 +130,6 @@ function TrailCard({
           </span>
         </div>
 
-        {/* Footer */}
         <div className="mt-auto flex items-center justify-between pt-1">
           <StarRow value={trail.rating} />
           <span className="text-xs text-muted-foreground flex items-center gap-1">
@@ -179,8 +141,6 @@ function TrailCard({
     </button>
   );
 }
-
-// ─── Empty State ───────────────────────────────────────────────────────────
 
 function EmptyState({ onClear }: { onClear: () => void }) {
   return (
@@ -202,7 +162,7 @@ function EmptyState({ onClear }: { onClear: () => void }) {
   );
 }
 
-// ─── Page ──────────────────────────────────────────────────────────────────
+// Page
 
 export default function Trails() {
   const [user, setUser] = useState<User | null>(null);
@@ -260,7 +220,7 @@ export default function Trails() {
 
       <Navbar user={user} activePath="/trails" />
 
-      {/* ── Page Header ─────────────────────────────────────────────────── */}
+      {/* Page header */}
       <section className=" px-4 py-6">
         <div className="max-w-5xl mx-auto flex items-end justify-between gap-4">
           <div>
@@ -277,11 +237,9 @@ export default function Trails() {
         </div>
       </section>
 
-      {/* ── Search & Filters ─────────────────────────────────────────────── */}
       <div className="sticky top-[57px] z-40 bg-background/95 backdrop-blur-sm px-4 py-3">
         <div className="max-w-5xl mx-auto flex flex-col gap-2.5">
 
-          {/* Search row */}
           <div className="flex gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
@@ -289,7 +247,7 @@ export default function Trails() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search by name or location…"
+                placeholder="Search by name or location..."
                 className="w-full pl-9 pr-9 py-2 text-sm bg-card border border-border rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-shadow"
               />
               {query && (
@@ -303,7 +261,6 @@ export default function Trails() {
               )}
             </div>
 
-            {/* Mobile filter toggle */}
             <button
               onClick={() => setFiltersOpen((v) => !v)}
               className={`sm:hidden flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg border transition-colors cursor-pointer ${
@@ -318,7 +275,6 @@ export default function Trails() {
             </button>
           </div>
 
-          {/* Filter chips — always visible on sm+, toggled on mobile */}
           <div className={`flex flex-wrap items-center gap-2 ${filtersOpen ? "flex" : "hidden sm:flex"}`}>
             <div className="flex items-center gap-1.5 flex-wrap">
               {DIFFICULTY_FILTERS.map((d) => (
@@ -367,18 +323,15 @@ export default function Trails() {
         </div>
       </div>
 
-      {/* ── Main Content ─────────────────────────────────────────────────── */}
       <main className="flex-1 px-4 py-7">
         <div className="max-w-5xl mx-auto">
 
-          {/* Results bar */}
           <div className="flex items-center justify-between mb-5">
             <p className="text-sm text-muted-foreground">
               <span className="font-semibold text-foreground">{filtered.length}</span>{" "}
               {filtered.length === 1 ? "trail" : "trails"} found
             </p>
 
-            {/* Sort */}
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground hidden sm:inline">Sort:</span>
               <div className="flex bg-card border border-border rounded-lg overflow-hidden">
@@ -399,7 +352,6 @@ export default function Trails() {
             </div>
           </div>
 
-          {/* Grid or Empty State */}
           {filtered.length === 0 ? (
             <EmptyState onClear={clearAll} />
           ) : (
@@ -416,3 +368,4 @@ export default function Trails() {
     </div>
   );
 }
+

@@ -4,9 +4,10 @@ import { useNavigate } from "react-router";
 import { MapPin, Star } from "lucide-react";
 import type { Route } from "./+types/home";
 import { supabase } from "~/lib/supabase";
-import { AuthModal, type AuthMode } from "~/components/AuthModal";
-import Navbar from "~/components/Navbar";
-import Footer from "~/components/Footer";
+import { AuthModal, type AuthMode } from "~/components/auth/AuthModal";
+import Navbar from "~/components/layout/Navbar";
+import Footer from "~/components/layout/Footer";
+import { HOME_DIFFICULTY_STYLE, HOME_TRAILS } from "~/constants/home";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -18,36 +19,6 @@ export function meta({}: Route.MetaArgs) {
     },
   ];
 }
-
-const trails = [
-  {
-    name: "Pine Ridge Loop",
-    location: "Blue Ridge, VA",
-    difficulty: "Moderate",
-    distance: "5.2 mi",
-    rating: 4.7,
-  },
-  {
-    name: "Summit Crest Trail",
-    location: "Rocky Mountain, CO",
-    difficulty: "Hard",
-    distance: "8.9 mi",
-    rating: 4.9,
-  },
-  {
-    name: "Meadow Walk",
-    location: "Smoky Mountains, TN",
-    difficulty: "Easy",
-    distance: "2.4 mi",
-    rating: 4.5,
-  },
-];
-
-const difficultyStyle: Record<string, string> = {
-  Easy: "bg-green-100 text-green-700",
-  Moderate: "bg-secondary text-secondary-foreground",
-  Hard: "bg-red-100 text-red-600",
-};
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -118,7 +89,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <h2 className="text-xl font-bold mb-6">Featured Trails</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {trails.map((trail) => (
+            {HOME_TRAILS.map((trail) => (
               <div
                 key={trail.name}
                 className="border border-border rounded-xl p-4 flex flex-col gap-3 bg-card shadow-sm"
@@ -130,7 +101,7 @@ export default function Home() {
                   </div>
                   <span
                     className={`shrink-0 text-xs font-medium px-2 py-1 rounded-full ${
-                      difficultyStyle[trail.difficulty]
+                      HOME_DIFFICULTY_STYLE[trail.difficulty]
                     }`}
                   >
                     {trail.difficulty}
@@ -153,3 +124,4 @@ export default function Home() {
     </div>
   );
 }
+

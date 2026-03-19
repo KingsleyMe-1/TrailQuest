@@ -1,4 +1,4 @@
-import type { Trail } from "~/components/TrailDetailModal";
+import type { Trail } from "~/constants/trail-detail";
 
 export const allTrails: Trail[] = [
   {
@@ -161,3 +161,4 @@ export const recentTrails: Trail[] = [
       "A challenging high-altitude traverse with exposed ridgeline sections offering 360° summit views.",
   },
 ];
+

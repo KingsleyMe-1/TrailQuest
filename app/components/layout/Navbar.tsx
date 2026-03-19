@@ -3,30 +3,11 @@ import type { User } from "@supabase/supabase-js";
 import {
   Menu,
   X,
-  LayoutDashboard,
-  Mountain,
-  Users,
-  Home,
-  Info,
-  Trophy,
   LogIn,
   Compass,
 } from "lucide-react";
-import { ProfileMenu } from "~/components/ProfileMenu";
-
-const GUEST_LINKS = [
-  { label: "Home",      href: "/",          icon: Home },
-  { label: "Trails",   href: "/trails",    icon: Mountain },
-  { label: "Community",href: "/community", icon: Users },
-  { label: "About",    href: "/about",     icon: Info },
-];
-
-const AUTH_LINKS = [
-  { label: "Dashboard",  href: "/dashboard",  icon: LayoutDashboard },
-  { label: "Trails",     href: "/trails",     icon: Mountain },
-  { label: "Community",  href: "/community",  icon: Users },
-  { label: "Challenges", href: "/challenges", icon: Trophy },
-];
+import { ProfileMenu } from "~/components/user/ProfileMenu";
+import { AUTH_LINKS, GUEST_LINKS } from "~/constants/navigation";
 
 type Props = {
   activePath?: string;
@@ -195,3 +176,4 @@ export default function Navbar({ activePath, user, onSignUpClick }: Props) {
     </>
   );
 }
+

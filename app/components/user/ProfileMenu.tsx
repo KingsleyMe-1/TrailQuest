@@ -141,13 +141,11 @@ export function ProfileMenu({ user }: ProfileMenuProps) {
         )}
       </button>
 
-      {/* Dropdown */}
       {open && (
         <div
           className="absolute right-0 mt-2 w-56 bg-popover border border-border rounded-xl shadow-lg z-50 overflow-hidden"
           role="menu"
         >
-          {/* User info header */}
           <div className="px-4 py-3 border-b border-border">
             <p className="text-sm font-semibold text-popover-foreground truncate">
               {displayName}
@@ -155,16 +153,13 @@ export function ProfileMenu({ user }: ProfileMenuProps) {
             <p className="text-xs text-muted-foreground truncate">{user.email}</p>
           </div>
 
-          {/* Upload error */}
           {uploadError && (
             <div className="px-4 py-2 text-xs text-destructive bg-destructive/10 border-b border-destructive/20">
               {uploadError}
             </div>
           )}
 
-          {/* Menu items */}
           <div className="py-1">
-            {/* Change photo — triggers hidden file input */}
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
@@ -202,7 +197,6 @@ export function ProfileMenu({ user }: ProfileMenuProps) {
               <span>Settings</span>
             </button>
 
-            {/* Theme toggle */}
             <button
               type="button"
               onClick={toggleTheme}
@@ -230,7 +224,6 @@ export function ProfileMenu({ user }: ProfileMenuProps) {
             </button>
           </div>
 
-          {/* Sign out */}
           <div className="border-t border-border py-1">
             <button
               type="button"
