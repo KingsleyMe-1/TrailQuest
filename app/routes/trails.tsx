@@ -8,7 +8,6 @@ import {
   TrendingUp,
   Mountain,
   X,
-  SlidersHorizontal,
   Route,
 } from "lucide-react";
 import type { Route as RRRoute } from "./+types/trails";
@@ -31,6 +30,8 @@ import {
 import Navbar from "~/components/layout/Navbar";
 import Footer from "~/components/layout/Footer";
 import TrailDetailModal from "~/components/trails/TrailDetailModal";
+import FilterDropdown from "~/components/ui/FilterDropdown";
+import { AuthModal, type AuthMode } from "~/components/auth/AuthModal";
 
 export function meta({}: RRRoute.MetaArgs) {
   return [
@@ -116,7 +117,7 @@ function TrailCard({
           <span className="flex flex-col items-center gap-1">
             <Mountain className="w-3.5 h-3.5 text-primary/70" />
             <span className="font-semibold text-foreground">{trail.distance}</span>
-            <span className="text-muted-foreground text-[10px] uppercase tracking-wide">dist</span>
+            <span className="text-muted-foreground text-[10px] uppercase tracking-wide">distance</span>
           </span>
           <span className="flex flex-col items-center gap-1 border-x border-border">
             <Clock className="w-3.5 h-3.5 text-primary/70" />
@@ -126,7 +127,7 @@ function TrailCard({
           <span className="flex flex-col items-center gap-1">
             <TrendingUp className="w-3.5 h-3.5 text-primary/70" />
             <span className="font-semibold text-foreground">{trail.elevation}</span>
-            <span className="text-muted-foreground text-[10px] uppercase tracking-wide">elev</span>
+            <span className="text-muted-foreground text-[10px] uppercase tracking-wide">elevation</span>
           </span>
         </div>
 
@@ -162,8 +163,6 @@ function EmptyState({ onClear }: { onClear: () => void }) {
   );
 }
 
-// Page
-
 export default function Trails() {
   const [user, setUser] = useState<User | null>(null);
   const [query, setQuery] = useState("");
@@ -171,7 +170,8 @@ export default function Trails() {
   const [trailType, setTrailType] = useState<TypeFilter>("All");
   const [sort, setSort] = useState<SortKey>("rating");
   const [activeTrail, setActiveTrail] = useState<Trail | null>(null);
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<AuthMode>("signup");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -214,14 +214,32 @@ export default function Trails() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
+      <AuthModal
+        isOpen={authOpen}
+        mode={authMode}
+        onClose={() => setAuthOpen(false)}
+        onSwitchMode={setAuthMode}
+        onAuthSuccess={(loggedInUser) => {
+          setUser(loggedInUser);
+          setAuthOpen(false);
+        }}
+      />
       {activeTrail && (
-        <TrailDetailModal trail={activeTrail} onClose={() => setActiveTrail(null)} />
+        <TrailDetailModal
+          trail={activeTrail}
+          onClose={() => setActiveTrail(null)}
+          user={user}
+          onAuthRequired={() => {
+            setActiveTrail(null);
+            setAuthMode("signup");
+            setAuthOpen(true);
+          }}
+        />
       )}
 
       <Navbar user={user} activePath="/trails" />
 
-      {/* Page header */}
-      <section className=" px-4 py-6">
+      <section className="px-4 py-6">
         <div className="max-w-5xl mx-auto flex items-end justify-between gap-4">
           <div>
             <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-1">
@@ -238,85 +256,52 @@ export default function Trails() {
       </section>
 
       <div className="sticky top-[57px] z-40 bg-background/95 backdrop-blur-sm px-4 py-3">
-        <div className="max-w-5xl mx-auto flex flex-col gap-2.5">
-
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search by name or location..."
-                className="w-full pl-9 pr-9 py-2 text-sm bg-card border border-border rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-shadow"
-              />
-              {query && (
-                <button
-                  onClick={() => setQuery("")}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                  aria-label="Clear search"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
-
-            <button
-              onClick={() => setFiltersOpen((v) => !v)}
-              className={`sm:hidden flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg border transition-colors cursor-pointer ${
-                hasActiveFilters
-                  ? "border-primary bg-primary/10 text-primary"
-                  : "border-border bg-card text-muted-foreground hover:text-foreground"
-              }`}
-              aria-label="Toggle filters"
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              {hasActiveFilters && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
-            </button>
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search by name or location..."
+              className="w-full pl-9 pr-9 py-2 text-sm bg-card border border-border rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-shadow"
+            />
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                aria-label="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
 
-          <div className={`flex flex-wrap items-center gap-2 ${filtersOpen ? "flex" : "hidden sm:flex"}`}>
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {DIFFICULTY_FILTERS.map((d) => (
-                <button
-                  key={d}
-                  onClick={() => setDifficulty(d)}
-                  className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-all cursor-pointer ${
-                    difficulty === d
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-foreground"
-                  }`}
-                >
-                  {d}
-                </button>
-              ))}
-            </div>
-
-            <div className="w-px h-3 bg-border/40 hidden sm:block" />
-
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {TYPE_FILTERS.map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setTrailType(t)}
-                  className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-all cursor-pointer ${
-                    trailType === t
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-foreground"
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-
+          <div className="flex gap-2">
+            <FilterDropdown<DifficultyFilter>
+              label="Difficulty"
+              value={difficulty}
+              options={DIFFICULTY_FILTERS}
+              onChange={setDifficulty}
+              active={difficulty !== "All"}
+              fullWidth
+            />
+            <FilterDropdown<TypeFilter>
+              label="Type"
+              value={trailType}
+              options={TYPE_FILTERS}
+              onChange={setTrailType}
+              active={trailType !== "All"}
+              fullWidth
+              menuAlign="right"
+            />
             {hasActiveFilters && (
               <button
                 onClick={clearAll}
-                className="ml-auto flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                className="flex items-center justify-center w-9 h-9 rounded-lg border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors cursor-pointer shrink-0"
+                aria-label="Clear all filters"
               >
-                <X className="w-3 h-3" />
-                Clear
+                <X className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
@@ -329,25 +314,37 @@ export default function Trails() {
           <div className="flex items-center justify-between mb-5">
             <p className="text-sm text-muted-foreground">
               <span className="font-semibold text-foreground">{filtered.length}</span>{" "}
-              {filtered.length === 1 ? "trail" : "trails"} found
+              <span className="hidden sm:inline">{filtered.length === 1 ? "trail" : "trails"} found</span>
             </p>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground hidden sm:inline">Sort:</span>
-              <div className="flex bg-card border border-border rounded-lg overflow-hidden">
-                {SORT_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.value}
-                    onClick={() => setSort(opt.value)}
-                    className={`text-xs font-medium px-3 py-1.5 transition-colors cursor-pointer ${
-                      sort === opt.value
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
+              <div className="sm:hidden">
+                <FilterDropdown<SortKey>
+                  label="Sort"
+                  value={sort}
+                  options={SORT_OPTIONS}
+                  onChange={setSort}
+                  active={sort !== "rating"}
+                  menuAlign="right"
+                />
+              </div>
+              <div className="hidden sm:flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">Sort:</span>
+                <div className="flex bg-card border border-border rounded-lg overflow-hidden">
+                  {SORT_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      onClick={() => setSort(opt.value)}
+                      className={`text-xs font-medium px-3 py-1.5 transition-colors cursor-pointer ${
+                        sort === opt.value
+                          ? "bg-primary text-primary-foreground"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

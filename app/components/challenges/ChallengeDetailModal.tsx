@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { X, CheckCircle2, ArrowRight, Users, MapPin } from "lucide-react";
-import { Link } from "react-router";
 import type {
   Challenge,
   ChallengeLeaderEntry,
@@ -10,6 +9,7 @@ import {
   CHALLENGE_TYPE_CONFIG,
 } from "~/constants/challenges";
 import { allTrails } from "~/constants/trails";
+import type { Trail } from "~/constants/trail-detail";
 import { TRAIL_CARD_IMAGES } from "~/constants/trails-page";
 
 type ModalTab = "overview" | "progress" | "leaderboard";
@@ -65,6 +65,7 @@ interface ChallengeDetailModalProps {
   onClose: () => void;
   communityLeaderboard: ChallengeLeaderEntry[];
   friendsLeaderboard: ChallengeLeaderEntry[];
+  onTrailSelect: (trail: Trail) => void;
 }
 
 export default function ChallengeDetailModal({
@@ -73,6 +74,7 @@ export default function ChallengeDetailModal({
   onClose,
   communityLeaderboard,
   friendsLeaderboard,
+  onTrailSelect,
 }: ChallengeDetailModalProps) {
   const [tab, setTab] = useState<ModalTab>("overview");
   const [mounted, setMounted] = useState(false);
@@ -298,10 +300,10 @@ export default function ChallengeDetailModal({
                     {recommendedTrailObjects.map((trail) => {
                       const img = TRAIL_CARD_IMAGES[trail.name];
                       return (
-                        <Link
+                        <button
                           key={trail.name}
-                          to="/trails"
-                          className="flex items-center gap-3 p-2.5 rounded-xl border border-border hover:border-primary/40 hover:bg-accent/50 transition-all group"
+                          onClick={() => onTrailSelect(trail)}
+                          className="flex items-center gap-3 p-2.5 rounded-xl border border-border hover:border-primary/40 hover:bg-accent/50 transition-all group w-full text-left"
                         >
                           <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted shrink-0">
                             {img ? (
@@ -325,7 +327,7 @@ export default function ChallengeDetailModal({
                             </p>
                           </div>
                           <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                        </Link>
+                        </button>
                       );
                     })}
                   </div>

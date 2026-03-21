@@ -4,6 +4,7 @@ import {
   Users,
   MapPin,
   Calendar,
+  Heart,
   CalendarDays,
   Clock,
   Mountain,
@@ -26,7 +27,10 @@ import { supabase } from "~/lib/supabase";
 import { AuthModal, type AuthMode } from "~/components/auth/AuthModal";
 import Navbar from "~/components/layout/Navbar";
 import Footer from "~/components/layout/Footer";
+import GroupDetailModal from "~/components/community/GroupDetailModal";
+import ActivityCommentModal, { type Comment } from "~/components/community/ActivityCommentModal";
 import {
+  type CommunityGroup,
   COMMUNITY_ACTIVITIES as ACTIVITIES,
   COMMUNITY_ANNOUNCEMENTS as ANNOUNCEMENTS,
   COMMUNITY_DIFFICULTY_STYLES as difficultyStyles,
@@ -44,6 +48,25 @@ export function meta({}: Route.MetaArgs) {
     },
   ];
 }
+
+const ACTIVITY_BASE_LIKES: Record<number, number> = { 1: 14, 2: 7, 3: 22, 4: 11 };
+
+const ACTIVITY_SEED_COMMENTS: Record<number, Comment[]> = {
+  1: [
+    { id: 101, seed: "AL", author: "Alex L.", text: "Incredible views up there! 🏔️ That summit shot is unreal.", time: "1h ago" },
+    { id: 102, seed: "BK", author: "Blair K.", text: "Can't wait to join next time. How was the trail condition?", time: "45m ago" },
+  ],
+  2: [
+    { id: 201, seed: "DM", author: "Dana M.", text: "That lake reflection photo is stunning. What time was it taken?", time: "3h ago" },
+  ],
+  3: [
+    { id: 301, seed: "FR", author: "Finn R.", text: "Granite Dome never disappoints 🙌 Great trip report!", time: "2d ago" },
+    { id: 302, seed: "GS", author: "Grace S.", text: "7.5 miles of pure joy — well done everyone!", time: "1d ago" },
+  ],
+  4: [
+    { id: 401, seed: "JH", author: "Jordan H.", text: "So proud of the turn-out. The trail looks amazing now!", time: "2d ago" },
+  ],
+};
 
 function SpotsBar({ spots, total }: { spots: number; total: number }) {
   const taken = total - spots;
@@ -72,6 +95,56 @@ export default function Community() {
   const [modalOpen, setModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<AuthMode>("login");
   const [lightbox, setLightbox] = useState<{ photos: string[]; index: number } | null>(null);
+  const [activeGroup, setActiveGroup] = useState<CommunityGroup | null>(null);
+  const [likedActivities, setLikedActivities] = useState<Set<number>>(new Set());
+  const [activeCommentId, setActiveCommentId] = useState<number | null>(null);
+  const [extraComments, setExtraComments] = useState<Record<number, Comment[]>>(() => {
+    try {
+      return JSON.parse(localStorage.getItem("tq_activity_comments") ?? "null") ?? {};
+    } catch {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("tq_activity_comments", JSON.stringify(extraComments));
+    } catch { }
+  }, [extraComments]);
+
+  function totalComments(id: number) {
+    return (ACTIVITY_SEED_COMMENTS[id]?.length ?? 0) + (extraComments[id]?.length ?? 0);
+  }
+
+  function totalLikes(id: number) {
+    return (ACTIVITY_BASE_LIKES[id] ?? 0) + (likedActivities.has(id) ? 1 : 0);
+  }
+
+  function handleAddComment(activityId: number, text: string) {
+    const seed = user?.email?.charAt(0).toUpperCase() ?? "U";
+    const author = user?.user_metadata?.full_name ?? user?.email?.split("@")[0] ?? "You";
+    const newComment: Comment = {
+      id: Date.now(),
+      seed,
+      author,
+      text,
+      time: "Just now",
+    };
+    setExtraComments((prev) => ({
+      ...prev,
+      [activityId]: [...(prev[activityId] ?? []), newComment],
+    }));
+  }
+
+  function toggleLike(id: number) {
+    requireAuth(() =>
+      setLikedActivities((prev) => {
+        const next = new Set(prev);
+        next.has(id) ? next.delete(id) : next.add(id);
+        return next;
+      })
+    );
+  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -112,8 +185,8 @@ export default function Community() {
     );
   }
 
-  function handleComment() {
-    requireAuth(() => {});
+  function openCommentModal(id: number) {
+    requireAuth(() => setActiveCommentId(id));
   }
 
   function openLightbox(photos: string[], index: number) {
@@ -204,6 +277,47 @@ export default function Community() {
           setModalOpen(false);
         }}
       />
+      {activeCommentId !== null && (() => {
+        const act = ACTIVITIES.find((a) => a.id === activeCommentId);
+        if (!act) return null;
+        const allComments = [
+          ...(ACTIVITY_SEED_COMMENTS[activeCommentId] ?? []),
+          ...(extraComments[activeCommentId] ?? []),
+        ];
+        return (
+          <ActivityCommentModal
+            activity={act}
+            comments={allComments}
+            onClose={() => setActiveCommentId(null)}
+            onSubmit={(text) => handleAddComment(activeCommentId, text)}
+            user={user}
+            onAuthRequired={() => {
+              setActiveCommentId(null);
+              setAuthMode("login");
+              setModalOpen(true);
+            }}
+          />
+        );
+      })()}
+      {activeGroup && (
+        <GroupDetailModal
+          group={activeGroup}
+          onClose={() => setActiveGroup(null)}
+          joined={joinedGroups.has(activeGroup.id)}
+          onToggleJoin={() => toggleJoin(activeGroup.id)}
+          user={user}
+          onAuthRequired={() => {
+            setActiveGroup(null);
+            setAuthMode("login");
+            setModalOpen(true);
+          }}
+          activities={ACTIVITIES}
+          announcements={ANNOUNCEMENTS}
+          rsvpd={rsvpd}
+          onRsvp={toggleRsvp}
+          onLightbox={openLightbox}
+        />
+      )}
       <Navbar activePath="/community" user={user} onSignUpClick={() => { setAuthMode("signup"); setModalOpen(true); }} />
 
       <main className="flex-1">
@@ -243,7 +357,8 @@ export default function Community() {
                 return (
                   <div
                     key={group.id}
-                    className="group relative bg-card border border-border rounded-2xl overflow-hidden flex flex-col hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-200"
+                    onClick={() => setActiveGroup(group)}
+                    className="group relative bg-card border border-border rounded-2xl overflow-hidden flex flex-col hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
                   >
                     <div className="relative h-36 w-full overflow-hidden bg-muted shrink-0">
                       <img
@@ -270,7 +385,7 @@ export default function Community() {
                           <span>{group.members.toLocaleString()} members</span>
                         </div>
                         <button
-                          onClick={() => toggleJoin(group.id)}
+                          onClick={(e) => { e.stopPropagation(); toggleJoin(group.id); }}
                           className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                             joined
                               ? "bg-primary/10 text-primary border border-primary/30 hover:bg-rose-500/10 hover:text-rose-500 hover:border-rose-500/30"
@@ -356,6 +471,45 @@ export default function Community() {
                         </div>
                       </div>
                     )}
+
+                    <div className="flex items-center gap-3 text-[11px] text-muted-foreground px-0.5 pt-1">
+                      {totalLikes(a.id) > 0 && (
+                        <span className="flex items-center gap-1">
+                          <Heart size={10} className="fill-rose-400 text-rose-400" />
+                          {totalLikes(a.id)} {totalLikes(a.id) === 1 ? "like" : "likes"}
+                        </span>
+                      )}
+                      {totalComments(a.id) > 0 && (
+                        <span className="flex items-center gap-1">
+                          <MessageCircle size={10} />
+                          {totalComments(a.id)} {totalComments(a.id) === 1 ? "comment" : "comments"}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-1 border-t border-border mt-0.5">
+                      <button
+                        onClick={() => toggleLike(a.id)}
+                        className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+                          likedActivities.has(a.id)
+                            ? "text-rose-500 bg-rose-500/10 border border-rose-500/20"
+                            : "text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 border border-transparent"
+                        }`}
+                      >
+                        <Heart
+                          size={13}
+                          className={likedActivities.has(a.id) ? "fill-rose-500" : ""}
+                        />
+                        Like
+                      </button>
+                      <button
+                        onClick={() => openCommentModal(a.id)}
+                        className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl border border-transparent text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all cursor-pointer"
+                      >
+                        <MessageCircle size={13} />
+                        Comment
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -439,7 +593,7 @@ export default function Community() {
                         )}
                       </button>
                       <button
-                        onClick={handleComment}
+                        onClick={() => requireAuth(() => {})}
                         className="p-2 rounded-xl border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors cursor-pointer"
                       >
                         <MessageCircle size={14} />
