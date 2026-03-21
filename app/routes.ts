@@ -7,4 +7,5 @@ export default [
   route("community", "routes/community.tsx"),
   route("about", "routes/about.tsx"),
   route("challenges", "routes/challenges.tsx"),
+  route("log-activity", "routes/log-activity.tsx"),
 ] satisfies RouteConfig;

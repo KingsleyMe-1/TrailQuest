@@ -31,6 +31,7 @@ import Navbar from "~/components/layout/Navbar";
 import Footer from "~/components/layout/Footer";
 import TrailDetailModal from "~/components/trails/TrailDetailModal";
 import FilterDropdown from "~/components/ui/FilterDropdown";
+import { AuthModal, type AuthMode } from "~/components/auth/AuthModal";
 
 export function meta({}: RRRoute.MetaArgs) {
   return [
@@ -169,6 +170,8 @@ export default function Trails() {
   const [trailType, setTrailType] = useState<TypeFilter>("All");
   const [sort, setSort] = useState<SortKey>("rating");
   const [activeTrail, setActiveTrail] = useState<Trail | null>(null);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<AuthMode>("signup");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -211,8 +214,27 @@ export default function Trails() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
+      <AuthModal
+        isOpen={authOpen}
+        mode={authMode}
+        onClose={() => setAuthOpen(false)}
+        onSwitchMode={setAuthMode}
+        onAuthSuccess={(loggedInUser) => {
+          setUser(loggedInUser);
+          setAuthOpen(false);
+        }}
+      />
       {activeTrail && (
-        <TrailDetailModal trail={activeTrail} onClose={() => setActiveTrail(null)} user={user} />
+        <TrailDetailModal
+          trail={activeTrail}
+          onClose={() => setActiveTrail(null)}
+          user={user}
+          onAuthRequired={() => {
+            setActiveTrail(null);
+            setAuthMode("signup");
+            setAuthOpen(true);
+          }}
+        />
       )}
 
       <Navbar user={user} activePath="/trails" />
