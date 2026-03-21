@@ -17,6 +17,8 @@ import ChallengesHero from "~/components/challenges/ChallengesHero";
 import ChallengeCard from "~/components/challenges/ChallengeCard";
 import ChallengeDetailModal from "~/components/challenges/ChallengeDetailModal";
 import SeasonalSpotlight from "~/components/challenges/SeasonalSpotlight";
+import TrailDetailModal from "~/components/trails/TrailDetailModal";
+import type { Trail } from "~/constants/trails";
 import {
   CHALLENGES,
   CHALLENGE_STATS,
@@ -73,9 +75,8 @@ const EMPTY_STATE: Record<FilterTab, { title: string; description: string }> = {
 
 function ChallengesPage({ user }: { user: User }) {
   const [filter, setFilter] = useState<FilterTab>("all");
-  const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(
-    null
-  );
+  const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
+  const [selectedTrail, setSelectedTrail] = useState<Trail | null>(null);
 
   const [activeChallengeIds, setActiveChallengeIds] = useState<Set<number>>(
     () => new Set(CHALLENGES.filter((c) => c.status === "active").map((c) => c.id))
@@ -237,7 +238,19 @@ function ChallengesPage({ user }: { user: User }) {
             ? (CHALLENGE_FRIENDS_LEADERBOARD[resolvedSelectedChallenge.id] ?? [])
             : []
         }
+        onTrailSelect={(trail) => {
+          setSelectedChallenge(null);
+          setSelectedTrail(trail);
+        }}
       />
+      {selectedTrail && (
+        <TrailDetailModal
+          trail={selectedTrail}
+          onClose={() => setSelectedTrail(null)}
+          user={user}
+          onAuthRequired={() => setSelectedTrail(null)}
+        />
+      )}
     </div>
   );
 }

@@ -34,9 +34,7 @@ export default function ActivityCommentModal({
   const [replyDraft, setReplyDraft] = useState("");
   const [replies, setReplies] = useState<Record<number, Comment[]>>(() => {
     try {
-      const stored = JSON.parse(localStorage.getItem("tq_activity_replies") ?? "null") ?? {};
-      // scope to this activity's comment IDs only – keep the full map, filter on render
-      return stored;
+      return JSON.parse(localStorage.getItem("tq_activity_replies") ?? "null") ?? {};
     } catch {
       return {};
     }
@@ -45,7 +43,7 @@ export default function ActivityCommentModal({
   useEffect(() => {
     try {
       localStorage.setItem("tq_activity_replies", JSON.stringify(replies));
-    } catch { /* quota exceeded – silently skip */ }
+    } catch { }
   }, [replies]);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const replyInputRef = useRef<HTMLTextAreaElement>(null);
@@ -68,14 +66,12 @@ export default function ActivityCommentModal({
     };
   }, [onClose]);
 
-  // Scroll to bottom when comments change
   useEffect(() => {
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
     }
   }, [comments.length]);
 
-  // Focus reply input when replyingTo changes
   useEffect(() => {
     if (replyingTo !== null) {
       setTimeout(() => replyInputRef.current?.focus(), 50);
@@ -142,12 +138,10 @@ export default function ActivityCommentModal({
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Mobile drag handle */}
         <div className="sm:hidden flex justify-center pt-2.5 pb-1 flex-shrink-0">
           <div className="w-10 h-1 rounded-full bg-muted-foreground/25" />
         </div>
 
-        {/* Header */}
         <div className="flex-shrink-0 flex items-center justify-between px-5 py-3.5 border-b border-border">
           <div className="flex items-center gap-2 min-w-0">
             <MessageCircle className="w-4 h-4 text-primary flex-shrink-0" />
@@ -170,7 +164,6 @@ export default function ActivityCommentModal({
           </button>
         </div>
 
-        {/* Comments list */}
         <div
           ref={listRef}
           className="flex-1 overflow-y-auto min-h-0 px-5 py-4 flex flex-col gap-3"
@@ -188,7 +181,6 @@ export default function ActivityCommentModal({
           ) : (
             comments.map((c) => (
               <div key={c.id} className="flex flex-col gap-1.5">
-                {/* Comment row */}
                 <div className="flex items-start gap-2.5">
                   <span className="w-7 h-7 rounded-full bg-primary/15 text-primary text-[11px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
                     {c.seed}
@@ -219,7 +211,6 @@ export default function ActivityCommentModal({
                   </div>
                 </div>
 
-                {/* Inline replies */}
                 {(replies[c.id]?.length ?? 0) > 0 && (
                   <div className="ml-9 flex flex-col gap-1.5 pl-3 border-l-2 border-primary/20">
                     {replies[c.id].map((r) => (
@@ -245,7 +236,6 @@ export default function ActivityCommentModal({
                   </div>
                 )}
 
-                {/* Inline reply input */}
                 {replyingTo === c.id && (
                   <div className="ml-9 flex items-end gap-2 pl-3 border-l-2 border-primary/30">
                     {user && (
@@ -292,7 +282,6 @@ export default function ActivityCommentModal({
           )}
         </div>
 
-        {/* Input footer */}
         <div className="flex-shrink-0 border-t border-border px-4 py-3 flex items-end gap-2 bg-card">
           {user && (
             <span className="w-7 h-7 rounded-full bg-primary/15 text-primary text-[11px] font-bold flex items-center justify-center flex-shrink-0 mb-0.5">

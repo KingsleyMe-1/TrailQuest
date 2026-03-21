@@ -123,12 +123,10 @@ export default function GroupDetailModal({
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Mobile drag handle */}
         <div className="sm:hidden flex justify-center pt-2.5 pb-1 flex-shrink-0">
           <div className="w-10 h-1 rounded-full bg-muted-foreground/25" />
         </div>
 
-        {/* Hero */}
         <div className="relative flex-shrink-0 h-44 overflow-hidden">
           <img
             src={group.image}
@@ -167,7 +165,6 @@ export default function GroupDetailModal({
           </div>
         </div>
 
-        {/* Stats bar */}
         <div className="flex-shrink-0 grid grid-cols-3 divide-x divide-border border-b border-border bg-muted/20">
           <div className="flex flex-col items-center py-3">
             <span className="text-[15px] font-bold text-foreground tabular-nums">
@@ -195,7 +192,6 @@ export default function GroupDetailModal({
           </div>
         </div>
 
-        {/* Tab bar */}
         <div className="flex-shrink-0 border-b border-border bg-card px-1">
           <div className="flex">
             {TABS.map((t) => (
@@ -227,9 +223,7 @@ export default function GroupDetailModal({
           </div>
         </div>
 
-        {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto min-h-0">
-          {/* ── About ── */}
           {tab === "about" && (
             <div className="px-5 py-5 flex flex-col gap-5">
               <p className="text-sm text-muted-foreground leading-relaxed">
@@ -277,7 +271,6 @@ export default function GroupDetailModal({
             </div>
           )}
 
-          {/* ── Events ── */}
           {tab === "events" && (
             <div className="px-5 py-4 flex flex-col gap-3">
               {groupEvents.length === 0 ? (
@@ -351,7 +344,6 @@ export default function GroupDetailModal({
             </div>
           )}
 
-          {/* ── Activity ── */}
           {tab === "activity" && (
             <div className="px-5 py-4 flex flex-col gap-3">
               {groupActivities.length === 0 ? (
@@ -428,7 +420,6 @@ export default function GroupDetailModal({
           )}
         </div>
 
-        {/* Footer */}
         <div className="flex-shrink-0 border-t border-border px-5 py-3 flex gap-2 bg-card">
           <button
             onClick={handleJoin}

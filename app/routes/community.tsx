@@ -109,8 +109,8 @@ export default function Community() {
   useEffect(() => {
     try {
       localStorage.setItem("tq_activity_comments", JSON.stringify(extraComments));
-    } catch { /* quota exceeded – silently skip */ }
-  }, [extraComments]);;
+    } catch { }
+  }, [extraComments]);
 
   function totalComments(id: number) {
     return (ACTIVITY_SEED_COMMENTS[id]?.length ?? 0) + (extraComments[id]?.length ?? 0);
