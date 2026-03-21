@@ -17,6 +17,12 @@ export interface CommunityGroup {
   icon: LucideIcon;
   color: string;
   image: string;
+  description: string;
+  founded: string;
+  totalHikes: number;
+  avgDistance: string;
+  location: string;
+  topTrails: string[];
 }
 
 export interface CommunityActivity {
@@ -56,6 +62,13 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     color: "text-primary bg-primary/10",
     image:
       "https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=600&q=80",
+    description:
+      "A community of passionate hikers exploring the full length of the Appalachian highlands. From scenic overlooks to challenging ridge traverses, we welcome all skill levels who share a love for the Blue Ridge.",
+    founded: "Jan 2021",
+    totalHikes: 142,
+    avgDistance: "7.4 mi",
+    location: "Blue Ridge, VA",
+    topTrails: ["Summit Crest Trail", "Pine Ridge Loop", "Ridgeline Traverse"],
   },
   {
     id: 2,
@@ -68,6 +81,13 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     color: "text-rose-500 bg-rose-500/10",
     image:
       "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
+    description:
+      "We chase sunrises and reach summits before breakfast. If you love watching the world wake up from 4,000 feet, this is your tribe. Early starts, big rewards, and unforgettable mornings.",
+    founded: "Jun 2022",
+    totalHikes: 87,
+    avgDistance: "9.1 mi",
+    location: "Asheville, NC",
+    topTrails: ["Granite Dome Circuit", "Summit Crest Trail", "Highland Moor Path"],
   },
   {
     id: 3,
@@ -80,6 +100,13 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     color: "text-emerald-500 bg-emerald-500/10",
     image:
       "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80",
+    description:
+      "Not every hike needs to be a challenge. We believe in the restorative power of forests — slow, mindful walks through old-growth canopies with plenty of time to stop, breathe, and take it all in.",
+    founded: "Mar 2020",
+    totalHikes: 203,
+    avgDistance: "4.2 mi",
+    location: "Green Valley, NC",
+    topTrails: ["Meadow Walk", "Lakeside Stroll", "Pine Ridge Loop"],
   },
   {
     id: 4,
@@ -92,6 +119,13 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     color: "text-amber-500 bg-amber-500/10",
     image:
       "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80",
+    description:
+      "For those who think a long hike starts at 20 miles. We push limits, carry heavy packs, and cover terrain most people only dream about. Come prepared — this is not a beginner group.",
+    founded: "Sep 2023",
+    totalHikes: 51,
+    avgDistance: "22.3 mi",
+    location: "Spruce Pine, NC",
+    topTrails: ["Ridgeline Traverse", "Deadwood Ravine", "Highland Moor Path"],
   },
   {
     id: 5,
@@ -104,6 +138,13 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     color: "text-sky-500 bg-sky-500/10",
     image:
       "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=600&q=80",
+    description:
+      "Working Monday to Friday so we can crush trails on Saturday and Sunday. We do it all — summits, loops, waterfalls — as long as it fits in a weekend. All fitness levels genuinely welcome.",
+    founded: "Apr 2021",
+    totalHikes: 318,
+    avgDistance: "6.8 mi",
+    location: "Charlotte, NC",
+    topTrails: ["Canyon Falls Path", "Summit Crest Trail", "Meadow Walk"],
   },
   {
     id: 6,
@@ -116,6 +157,13 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     color: "text-violet-500 bg-violet-500/10",
     image:
       "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=600&q=80",
+    description:
+      "We hike with cameras as much as boots. Golden hour chases, macro wildflower shots, misty valley panoramas — we help you see trails as art. Any camera from phone to mirrorless is welcome.",
+    founded: "Aug 2022",
+    totalHikes: 94,
+    avgDistance: "5.5 mi",
+    location: "Asheville, NC",
+    topTrails: ["Granite Dome Circuit", "Canyon Falls Path", "Lakeside Stroll"],
   },
 ];
 
