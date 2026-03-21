@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import type { User } from "@supabase/supabase-js";
 import {
   MapPin,
   Clock,
@@ -18,6 +19,7 @@ import {
   TRAIL_DETAIL_TABS,
   TRAIL_DIFFICULTY_CONFIG,
 } from "~/constants/trail-detail";
+import { TRAIL_CARD_IMAGES } from "~/constants/trails-page";
 
 function ElevationProfile({ points }: { points: number[] }) {
   const W = 280, H = 64, PAD = 4;
@@ -59,13 +61,15 @@ function ElevationProfile({ points }: { points: number[] }) {
 type Props = {
   trail: Trail;
   onClose: () => void;
+  user: User | null;
 };
 
-export default function TrailDetailModal({ trail, onClose }: Props) {
+export default function TrailDetailModal({ trail, onClose, user }: Props) {
   const [tab, setTab] = useState<ModalTab>("overview");
   const [mounted, setMounted] = useState(false);
   const details = TRAIL_DETAILS[trail.name];
   const cfg = TRAIL_DIFFICULTY_CONFIG[trail.difficulty];
+  const imgSrc = TRAIL_CARD_IMAGES[trail.name];
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => setMounted(true));
@@ -97,36 +101,24 @@ export default function TrailDetailModal({ trail, onClose }: Props) {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div
-          className="relative flex-shrink-0 h-36 overflow-hidden"
-          style={{
-            background:
-              "linear-gradient(135deg, var(--primary) 0%, oklch(0.40 0.21 285) 100%)",
-          }}
-        >
-          <svg
-            className="absolute inset-0 w-full h-full"
-            viewBox="0 0 500 144"
-            preserveAspectRatio="xMidYMid slice"
-            aria-hidden="true"
-          >
-            <path
-              d="M0,144 L0,60 Q70,10 140,55 Q210,100 280,30 Q350,-10 420,50 Q470,90 500,40 L500,144Z"
-              fill="white"
-              fillOpacity="0.06"
+        <div className="relative flex-shrink-0 h-44 overflow-hidden">
+          {/* Trail photo */}
+          {imgSrc && (
+            <img
+              src={imgSrc}
+              alt={trail.name}
+              className="absolute inset-0 w-full h-full object-cover"
             />
-            <path
-              d="M0,144 L0,90 Q80,60 170,85 Q260,110 340,60 Q410,20 500,70 L500,144Z"
-              fill="white"
-              fillOpacity="0.09"
-            />
-            <path
-              d="M0,144 L0,118 Q90,98 200,115 Q310,132 400,98 Q460,74 500,105 L500,144Z"
-              fill="white"
-              fillOpacity="0.15"
-            />
-          </svg>
-          <div className="pointer-events-none absolute -top-4 -right-4 w-28 h-28 rounded-full bg-white/10 blur-2xl" />
+          )}
+          {/* Gradient overlay — ensures text legibility and tints when no image */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: imgSrc
+                ? "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.60) 100%)"
+                : "linear-gradient(135deg, var(--primary) 0%, oklch(0.40 0.21 285) 100%)",
+            }}
+          />
 
           <button
             onClick={onClose}
@@ -182,12 +174,14 @@ export default function TrailDetailModal({ trail, onClose }: Props) {
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {trail.description}
               </p>
-              <div className="grid grid-cols-2 gap-2">
+              <div className={`grid gap-2 ${user ? "grid-cols-2" : "grid-cols-3"}`}>
                 {[
                   { icon: <MapPin className="w-3.5 h-3.5" />, label: "Distance", value: trail.distance },
                   { icon: <Clock className="w-3.5 h-3.5" />, label: "Duration", value: trail.duration },
                   { icon: <TrendingUp className="w-3.5 h-3.5" />, label: "Elevation", value: trail.elevation },
-                  { icon: <Calendar className="w-3.5 h-3.5" />, label: "Completed", value: trail.completedAt },
+                  ...(user
+                    ? [{ icon: <Calendar className="w-3.5 h-3.5" />, label: "Completed", value: trail.completedAt || "—" }]
+                    : []),
                 ].map((item) => (
                   <div
                     key={item.label}

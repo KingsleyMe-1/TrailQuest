@@ -215,7 +215,7 @@ export default function Trails() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
       {activeTrail && (
-        <TrailDetailModal trail={activeTrail} onClose={() => setActiveTrail(null)} />
+        <TrailDetailModal trail={activeTrail} onClose={() => setActiveTrail(null)} user={user} />
       )}
 
       <Navbar user={user} activePath="/trails" />
