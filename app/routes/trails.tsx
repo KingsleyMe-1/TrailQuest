@@ -237,7 +237,11 @@ export default function Trails() {
         />
       )}
 
-      <Navbar user={user} activePath="/trails" />
+      <Navbar
+        user={user}
+        activePath="/trails"
+        onSignUpClick={() => { setAuthMode("signup"); setAuthOpen(true); }}
+      />
 
       <section className="px-4 py-6">
         <div className="max-w-5xl mx-auto flex items-end justify-between gap-4">
