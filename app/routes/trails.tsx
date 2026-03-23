@@ -1,4 +1,5 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { useSearchParams } from "react-router";
 import type { User } from "@supabase/supabase-js";
 import {
   Search,
@@ -164,11 +165,24 @@ function EmptyState({ onClear }: { onClear: () => void }) {
 }
 
 export default function Trails() {
+  const [searchParams] = useSearchParams();
   const [user, setUser] = useState<User | null>(null);
   const [query, setQuery] = useState("");
-  const [difficulty, setDifficulty] = useState<DifficultyFilter>("All");
-  const [trailType, setTrailType] = useState<TypeFilter>("All");
-  const [sort, setSort] = useState<SortKey>("rating");
+  const [difficulty, setDifficulty] = useState<DifficultyFilter>(
+    (DIFFICULTY_FILTERS.includes(searchParams.get("difficulty") as DifficultyFilter)
+      ? searchParams.get("difficulty")
+      : "All") as DifficultyFilter
+  );
+  const [trailType, setTrailType] = useState<TypeFilter>(
+    (TYPE_FILTERS.includes(searchParams.get("type") as TypeFilter)
+      ? searchParams.get("type")
+      : "All") as TypeFilter
+  );
+  const [sort, setSort] = useState<SortKey>(
+    (["rating", "distance", "name"].includes(searchParams.get("sort") ?? "")
+      ? searchParams.get("sort")
+      : "rating") as SortKey
+  );
   const [activeTrail, setActiveTrail] = useState<Trail | null>(null);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<AuthMode>("signup");
