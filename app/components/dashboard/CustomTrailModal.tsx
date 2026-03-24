@@ -36,7 +36,6 @@ export default function CustomTrailModal({ isOpen, onClose }: CustomTrailModalPr
   const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
 
-  // Trail name with autocomplete
   const [trailInput, setTrailInput] = useState("");
   const [location, setLocation] = useState("");
   const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
@@ -92,7 +91,6 @@ export default function CustomTrailModal({ isOpen, onClose }: CustomTrailModalPr
     setTimeout(onClose, 200);
   }, [onClose]);
 
-  // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
       setTrailInput("");
@@ -149,25 +147,21 @@ export default function CustomTrailModal({ isOpen, onClose }: CustomTrailModalPr
       aria-modal="true"
       aria-labelledby="custom-trail-title"
     >
-      {/* Backdrop */}
       <div
         className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-200 ${mounted ? "opacity-100" : "opacity-0"}`}
         onClick={handleClose}
         aria-hidden="true"
       />
 
-      {/* Dialog — bottom sheet on mobile, centered card on sm+ */}
       <div
         className={`relative w-full sm:max-w-md flex flex-col max-h-[90dvh] sm:max-h-[92dvh] bg-card border-t sm:border border-border rounded-t-2xl sm:rounded-2xl shadow-2xl transition-all duration-300 ${
           mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 sm:scale-95"
         }`}
       >
-        {/* Drag handle — mobile only */}
         <div className="flex justify-center pt-2.5 pb-1 sm:hidden" aria-hidden="true">
           <div className="w-9 h-1 rounded-full bg-border" />
         </div>
 
-        {/* Header */}
         <div className="flex items-center justify-between px-4 sm:px-6 pt-3 sm:pt-5 pb-4 border-b border-border">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -189,10 +183,8 @@ export default function CustomTrailModal({ isOpen, onClose }: CustomTrailModalPr
           </button>
         </div>
 
-        {/* Body — scrollable on small screens */}
         <div className="px-4 sm:px-6 py-4 sm:py-5 flex flex-col gap-4 sm:gap-5 overflow-y-auto flex-1">
 
-          {/* Trail Name */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="trail-name" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               Trail Name <span className="text-rose-500 normal-case font-normal tracking-normal">*</span>
@@ -220,7 +212,6 @@ export default function CustomTrailModal({ isOpen, onClose }: CustomTrailModalPr
             )}
           </div>
 
-          {/* Location */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="trail-location" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               Location <span className="text-rose-500 normal-case font-normal tracking-normal">*</span>
@@ -295,7 +286,6 @@ export default function CustomTrailModal({ isOpen, onClose }: CustomTrailModalPr
             )}
           </div>
 
-          {/* Difficulty */}
           <fieldset>
             <legend className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2.5">
               Difficulty <span className="font-normal tracking-normal normal-case text-muted-foreground/60">(optional)</span>
@@ -317,7 +307,6 @@ export default function CustomTrailModal({ isOpen, onClose }: CustomTrailModalPr
             </div>
           </fieldset>
 
-          {/* Trail Type */}
           <fieldset>
             <legend className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2.5">
               Trail Type <span className="font-normal tracking-normal normal-case text-muted-foreground/60">(optional)</span>
@@ -342,7 +331,6 @@ export default function CustomTrailModal({ isOpen, onClose }: CustomTrailModalPr
           </fieldset>
         </div>
 
-        {/* Footer */}
         <div className="px-4 sm:px-6 pb-5 pt-4 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 border-t border-border">
           <button
             type="button"

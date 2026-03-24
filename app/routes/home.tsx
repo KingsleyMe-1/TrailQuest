@@ -92,7 +92,6 @@ export default function Home() {
 
       <Navbar user={user} onSignUpClick={openSignUp} />
 
-      {/* Hero */}
       <section className="bg-primary text-primary-foreground px-4 py-16 text-center">
         <div className="max-w-xl mx-auto">
           <h1 className="text-3xl sm:text-4xl font-bold mb-3">
@@ -120,7 +119,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Trails */}
       <main className="flex-1 px-4 py-10">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-xl font-bold mb-6">Featured Trails</h2>
