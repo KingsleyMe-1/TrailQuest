@@ -1,12 +1,12 @@
-import { Link } from "react-router";
 import type { User } from "@supabase/supabase-js";
-import { Compass, BarChart3 } from "lucide-react";
+import { SlidersHorizontal, BarChart3 } from "lucide-react";
 
 interface DashboardHeroProps {
   user: User;
+  onCustomTrail: () => void;
 }
 
-export default function DashboardHero({ user }: DashboardHeroProps) {
+export default function DashboardHero({ user, onCustomTrail }: DashboardHeroProps) {
   const firstName = user.user_metadata?.full_name
     ? user.user_metadata.full_name.split(" ")[0]
     : "Hiker";
@@ -55,12 +55,12 @@ export default function DashboardHero({ user }: DashboardHeroProps) {
           </p>
         </div>
         <div className="flex gap-2 shrink-0">
-          <Link
-            to="/trails"
+          <button
+            onClick={onCustomTrail}
             className="flex items-center gap-2 text-sm font-semibold bg-primary-foreground text-primary px-4 py-2.5 rounded-xl hover:opacity-90 transition-opacity cursor-pointer"
           >
-            <Compass size={15} /> Find a Trail
-          </Link>
+            <SlidersHorizontal size={15} /> Custom Trail
+          </button>
           <button className="flex items-center gap-2 text-sm font-semibold border border-primary-foreground/30 text-primary-foreground px-4 py-2.5 rounded-xl hover:bg-primary-foreground/10 transition-colors cursor-pointer">
             <BarChart3 size={15} /> Progress
           </button>

@@ -1,4 +1,5 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { useSearchParams } from "react-router";
 import type { User } from "@supabase/supabase-js";
 import {
   Search,
@@ -164,11 +165,24 @@ function EmptyState({ onClear }: { onClear: () => void }) {
 }
 
 export default function Trails() {
+  const [searchParams] = useSearchParams();
   const [user, setUser] = useState<User | null>(null);
-  const [query, setQuery] = useState("");
-  const [difficulty, setDifficulty] = useState<DifficultyFilter>("All");
-  const [trailType, setTrailType] = useState<TypeFilter>("All");
-  const [sort, setSort] = useState<SortKey>("rating");
+  const [query, setQuery] = useState(searchParams.get("q") ?? "");
+  const [difficulty, setDifficulty] = useState<DifficultyFilter>(
+    (DIFFICULTY_FILTERS.includes(searchParams.get("difficulty") as DifficultyFilter)
+      ? searchParams.get("difficulty")
+      : "All") as DifficultyFilter
+  );
+  const [trailType, setTrailType] = useState<TypeFilter>(
+    (TYPE_FILTERS.includes(searchParams.get("type") as TypeFilter)
+      ? searchParams.get("type")
+      : "All") as TypeFilter
+  );
+  const [sort, setSort] = useState<SortKey>(
+    (["rating", "distance", "name"].includes(searchParams.get("sort") ?? "")
+      ? searchParams.get("sort")
+      : "rating") as SortKey
+  );
   const [activeTrail, setActiveTrail] = useState<Trail | null>(null);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<AuthMode>("signup");
@@ -237,7 +251,11 @@ export default function Trails() {
         />
       )}
 
-      <Navbar user={user} activePath="/trails" />
+      <Navbar
+        user={user}
+        activePath="/trails"
+        onSignUpClick={() => { setAuthMode("signup"); setAuthOpen(true); }}
+      />
 
       <section className="px-4 py-6">
         <div className="max-w-5xl mx-auto flex items-end justify-between gap-4">
