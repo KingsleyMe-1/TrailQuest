@@ -167,7 +167,7 @@ function EmptyState({ onClear }: { onClear: () => void }) {
 export default function Trails() {
   const [searchParams] = useSearchParams();
   const [user, setUser] = useState<User | null>(null);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const [difficulty, setDifficulty] = useState<DifficultyFilter>(
     (DIFFICULTY_FILTERS.includes(searchParams.get("difficulty") as DifficultyFilter)
       ? searchParams.get("difficulty")
