@@ -32,8 +32,3 @@ export const HOME_TRAILS: HomeTrail[] = [
   },
 ];
 
-export const HOME_DIFFICULTY_STYLE: Record<HomeDifficulty, string> = {
-  Easy: "bg-green-100 text-green-700",
-  Moderate: "bg-secondary text-secondary-foreground",
-  Hard: "bg-red-100 text-red-600",
-};

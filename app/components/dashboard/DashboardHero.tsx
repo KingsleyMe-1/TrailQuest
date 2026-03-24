@@ -1,15 +1,16 @@
 import type { User } from "@supabase/supabase-js";
-import { SlidersHorizontal, BarChart3 } from "lucide-react";
+import { SlidersHorizontal, Trophy } from "lucide-react";
 
 interface DashboardHeroProps {
   user: User;
   onCustomTrail: () => void;
+  onLeaderboard: () => void;
 }
 
-export default function DashboardHero({ user, onCustomTrail }: DashboardHeroProps) {
+export default function DashboardHero({ user, onCustomTrail, onLeaderboard }: DashboardHeroProps) {
   const firstName = user.user_metadata?.full_name
     ? user.user_metadata.full_name.split(" ")[0]
-    : "Hiker";
+    : "Kingsley";
 
   return (
     <section
@@ -46,7 +47,6 @@ export default function DashboardHero({ user, onCustomTrail }: DashboardHeroProp
           </p>
           <h1 className="text-2xl sm:text-4xl font-bold text-primary-foreground leading-tight">
             {firstName}
-            <span className="text-primary-foreground/60">'s Dashboard</span>
           </h1>
           <p className="mt-2 text-sm text-primary-foreground/70 max-w-sm leading-relaxed">
             You've logged{" "}
@@ -61,8 +61,11 @@ export default function DashboardHero({ user, onCustomTrail }: DashboardHeroProp
           >
             <SlidersHorizontal size={15} /> Custom Trail
           </button>
-          <button className="flex items-center gap-2 text-sm font-semibold border border-primary-foreground/30 text-primary-foreground px-4 py-2.5 rounded-xl hover:bg-primary-foreground/10 transition-colors cursor-pointer">
-            <BarChart3 size={15} /> Progress
+          <button
+            onClick={onLeaderboard}
+            className="flex items-center gap-2 text-sm font-semibold border border-primary-foreground/30 text-primary-foreground px-4 py-2.5 rounded-xl hover:bg-primary-foreground/10 transition-colors cursor-pointer"
+          >
+            <Trophy size={15} /> Leaderboards
           </button>
         </div>
       </div>

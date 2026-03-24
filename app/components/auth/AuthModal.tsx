@@ -68,7 +68,6 @@ export function AuthModal({
         });
         if (authError) throw authError;
         if (data.user && !data.session) {
-          // Email confirmation is required
           setSuccessMsg(
             "Account created! Please check your email to confirm your address before signing in."
           );
@@ -123,7 +122,6 @@ export function AuthModal({
           </button>
         </div>
 
-        {/* Mode tab toggle */}
         <div className="flex gap-1 bg-muted p-1 rounded-lg mb-5">
           {(["signup", "login"] as const).map((m) => (
             <button
@@ -141,21 +139,18 @@ export function AuthModal({
           ))}
         </div>
 
-        {/* Success message */}
         {successMsg && (
           <div className="mb-4 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2.5">
             {successMsg}
           </div>
         )}
 
-        {/* Error message */}
         {error && (
           <div className="mb-4 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-3 py-2.5">
             {error}
           </div>
         )}
 
-        {/* Form — hidden after successful sign-up (email confirmation required) */}
         {!successMsg && (
           <form onSubmit={handleSubmit} className="flex flex-col gap-3" noValidate>
             <div>

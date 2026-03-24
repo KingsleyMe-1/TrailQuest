@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import type { User } from "@supabase/supabase-js";
 import {
   MapPin,
   Star,
@@ -37,7 +38,7 @@ function StarRating({ value }: { value: number }) {
   );
 }
 
-export default function RecentTrails() {
+export default function RecentTrails({ user }: { user: User }) {
   const [expandedTrail, setExpandedTrail] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [imgErrors, setImgErrors] = useState<Set<string>>(new Set());
@@ -73,7 +74,7 @@ export default function RecentTrails() {
           to="/trails"
           className="flex items-center gap-1.5 text-xs font-semibold text-primary hover:opacity-75 transition-opacity cursor-pointer"
         >
-          Browse All <ArrowRight className="w-3.5 h-3.5" />
+          Browse All Trails<ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
 
@@ -206,7 +207,12 @@ export default function RecentTrails() {
       </div>
 
       {activeTrail && (
-        <TrailDetailModal trail={activeTrail} onClose={() => setActiveTrail(null)} />
+        <TrailDetailModal
+          trail={activeTrail}
+          onClose={() => setActiveTrail(null)}
+          user={user}
+          onAuthRequired={() => setActiveTrail(null)}
+        />
       )}
     </>
   );
