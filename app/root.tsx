@@ -6,6 +6,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import { ActivityProvider } from "~/context/ActivityContext";
+import ActivityWidget from "~/components/activity/ActivityWidget";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -48,7 +50,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <ActivityProvider>
+      <Outlet />
+      <ActivityWidget />
+    </ActivityProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

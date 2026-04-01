@@ -1,4 +1,5 @@
 import type { Trail } from "~/constants/trail-detail";
+export type { Trail };
 
 export const allTrails: Trail[] = [
   {

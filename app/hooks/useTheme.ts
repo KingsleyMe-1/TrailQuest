@@ -16,7 +16,6 @@ function getStoredTheme(): Theme | null {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === "dark" || stored === "light") return stored;
   } catch {
-    // localStorage may be unavailable in some environments
   }
   return null;
 }
@@ -36,13 +35,11 @@ export function useTheme() {
     return getStoredTheme() ?? getSystemTheme();
   });
 
-  // Apply class whenever theme changes
   useEffect(() => {
     applyTheme(theme);
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch {
-      // ignore
     }
   }, [theme]);
 

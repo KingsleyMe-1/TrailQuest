@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
+import { ChevronRight } from "lucide-react";
 import { DASHBOARD_STATS } from "~/constants/dashboard";
+import type { DashboardStat } from "~/constants/dashboard";
 
-// ── Animated counter ──────────────────────────────────────────────────────────
 function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: string }) {
   const [display, setDisplay] = useState(0);
   const frameRef = useRef<number>(0);
@@ -28,18 +29,22 @@ function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: stri
   );
 }
 
-export default function StatsGrid() {
+export default function StatsGrid({ onStatClick }: { onStatClick: (stat: DashboardStat) => void }) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
       {DASHBOARD_STATS.map((s) => {
         const Icon = s.icon;
         return (
-          <div
+          <button
             key={s.label}
-            className={`relative overflow-hidden rounded-2xl border ${s.border} bg-card p-4 flex flex-col gap-2 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-200`}
+            onClick={() => onStatClick(s)}
+            className={`relative overflow-hidden text-left w-full rounded-2xl border ${s.border} bg-card p-4 flex flex-col gap-2 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group focus-visible:outline-2 focus-visible:outline-ring`}
           >
-            <div className={`w-8 h-8 rounded-xl ${s.bg} flex items-center justify-center`}>
-              <Icon className={`w-4 h-4 ${s.color}`} />
+            <div className="flex items-start justify-between">
+              <div className={`w-8 h-8 rounded-xl ${s.bg} flex items-center justify-center`}>
+                <Icon className={`w-4 h-4 ${s.color}`} />
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/30 group-hover:text-muted-foreground/70 group-hover:translate-x-0.5 transition-all duration-200" />
             </div>
             <div>
               <p className={`text-2xl font-bold leading-none ${s.color}`}>
@@ -49,7 +54,7 @@ export default function StatsGrid() {
             </div>
             <p className="text-[11px] text-muted-foreground/60">{s.sub}</p>
             <div className={`pointer-events-none absolute -bottom-4 -right-4 w-16 h-16 rounded-full ${s.bg} blur-xl opacity-60`} />
-          </div>
+          </button>
         );
       })}
     </div>

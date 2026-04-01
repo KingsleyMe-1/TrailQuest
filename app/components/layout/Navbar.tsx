@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router";
 import type { User } from "@supabase/supabase-js";
 import {
   Menu,
@@ -37,16 +38,16 @@ export default function Navbar({ activePath, user, onSignUpClick }: Props) {
     <>
       <header className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <a href="/" className="text-lg font-bold tracking-tight">
+          <Link to="/" className="text-lg font-bold tracking-tight">
             <span className="font-normal">Trail</span>
             <span className="text-primary">Quest</span>
-          </a>
+          </Link>
 
           <nav className="hidden sm:flex items-center gap-6 text-sm text-muted-foreground">
             {visibleLinks.map(({ label, href }) => (
-              <a
+              <Link
                 key={label}
-                href={href}
+                to={href}
                 className={
                   activePath === href
                     ? "text-foreground font-medium"
@@ -54,7 +55,7 @@ export default function Navbar({ activePath, user, onSignUpClick }: Props) {
                 }
               >
                 {label}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -113,9 +114,9 @@ export default function Navbar({ activePath, user, onSignUpClick }: Props) {
           {visibleLinks.map(({ label, href, icon: Icon }) => {
             const isActive = activePath === href;
             return (
-              <a
+              <Link
                 key={label}
-                href={href}
+                to={href}
                 onClick={() => setMobileOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
                   isActive
@@ -134,7 +135,7 @@ export default function Navbar({ activePath, user, onSignUpClick }: Props) {
                 {isActive && (
                   <span className="ml-auto w-1.5 h-1.5 rounded-full bg-primary-foreground/80" />
                 )}
-              </a>
+              </Link>
             );
           })}
         </nav>
