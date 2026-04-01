@@ -364,7 +364,7 @@ export default function Community() {
                         onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-                      <span className={`absolute top-2.5 right-2.5 text-[10px] font-semibold px-2.5 py-1 rounded-full border backdrop-blur-sm ${groupLevelStyles[group.level] ?? "text-muted-foreground bg-background/60 border-border"}`}>
+                      <span className={`absolute top-2.5 right-2.5 text-[10px] font-bold px-2.5 py-1 rounded-full border shadow-md ${groupLevelStyles[group.level] ?? "text-white bg-primary border-primary"}`}>
                         {group.level}
                       </span>
                     </div>

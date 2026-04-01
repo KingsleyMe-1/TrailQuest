@@ -295,10 +295,10 @@ export const COMMUNITY_DIFFICULTY_STYLES: Record<string, string> = {
 };
 
 export const COMMUNITY_GROUP_LEVEL_STYLES: Record<string, string> = {
-  "Beginner-Friendly": "text-muted-foreground bg-muted border-border",
-  "Leisurely Pace": "text-muted-foreground bg-muted border-border",
-  "All Levels Welcome": "text-primary bg-primary/10 border-primary/20",
-  "Casual Adventurers": "text-primary bg-primary/10 border-primary/20",
-  "Summit Seekers": "text-primary bg-primary/20 border-primary/30",
-  "Elite Endurance": "text-primary bg-primary/30 border-primary/40",
+  "Beginner-Friendly": "text-white bg-slate-600 border-slate-500",
+  "Leisurely Pace": "text-white bg-slate-600 border-slate-500",
+  "All Levels Welcome": "text-white bg-primary border-primary",
+  "Casual Adventurers": "text-white bg-primary border-primary",
+  "Summit Seekers": "text-white bg-primary border-primary",
+  "Elite Endurance": "text-white bg-primary border-primary",
 };
