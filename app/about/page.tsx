@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import type { User } from "@supabase/supabase-js";
 import {
@@ -11,7 +13,6 @@ import {
   Heart,
   ChevronDown,
 } from "lucide-react";
-import type { Route } from "./+types/about";
 import { supabase } from "~/lib/supabase";
 import { AuthModal, type AuthMode } from "~/components/auth/AuthModal";
 import Navbar from "~/components/layout/Navbar";
@@ -22,17 +23,6 @@ import {
   ABOUT_TECH_STACK as TECH_STACK,
   ABOUT_TIMELINE as TIMELINE,
 } from "~/constants/about";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "About - TrailQuest" },
-    {
-      name: "description",
-      content:
-        "Learn about TrailQuest - the story, the developer, and the technology stack behind the app.",
-    },
-  ];
-}
 
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
@@ -255,7 +245,7 @@ export default function About() {
                         {
                           group: "Frontend",
                           color: "text-primary border-primary/30 bg-primary/8 hover:bg-primary/15",
-                          skills: ["React 19", "TypeScript", "Tailwind CSS", "Vite"],
+                          skills: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS"],
                         },
                         {
                           group: "Backend",
@@ -308,10 +298,6 @@ export default function About() {
 
                 <div className="mx-6 mb-5 rounded-2xl bg-secondary/40 backdrop-blur-sm border border-white/5 px-5 py-3 flex items-center justify-between gap-4 flex-wrap">
                   <p className="text-xs text-muted-foreground italic">"The best trail is the one you haven't hiked yet."</p>
-                  <div className="flex items-center gap-1.5 text-xs text-primary font-medium">
-                    <Heart size={11} className="fill-primary" />
-                    Made with passion
-                  </div>
                 </div>
 
               </div>
@@ -445,4 +431,3 @@ export default function About() {
     </div>
   );
 }
-

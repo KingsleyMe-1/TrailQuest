@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
 
 export type ActivityStatus = "idle" | "active" | "paused" | "finished";

@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { Link } from "react-router";
+import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 import {
   MapPin,
@@ -71,7 +73,7 @@ export default function RecentTrails({ user }: { user: User }) {
           </p>
         </div>
         <Link
-          to="/trails"
+          href="/trails"
           className="flex items-center gap-1.5 text-xs font-semibold text-primary hover:opacity-75 transition-opacity cursor-pointer"
         >
           Browse All Trails<ArrowRight className="w-3.5 h-3.5" />

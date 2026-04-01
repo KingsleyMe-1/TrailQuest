@@ -1,8 +1,9 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import { useNavigate } from "react-router";
+import { useRouter } from "next/navigation";
 import { MapPin, Star, Clock, TrendingUp, Route as RouteIcon, Mountain } from "lucide-react";
-import type { Route } from "./+types/home";
 import { supabase } from "~/lib/supabase";
 import { AuthModal, type AuthMode } from "~/components/auth/AuthModal";
 import Navbar from "~/components/layout/Navbar";
@@ -13,36 +14,25 @@ import { allTrails, type Trail } from "~/constants/trails";
 import { TRAIL_CARD_IMAGES } from "~/constants/trails-page";
 import { TRAIL_DIFFICULTY_CONFIG } from "~/constants/trail-detail";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "TrailQuest - Discover Your Next Adventure" },
-    {
-      name: "description",
-      content:
-        "Explore thousands of trails, track your progress, and connect with fellow hikers.",
-    },
-  ];
-}
-
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<AuthMode>("signup");
   const [selectedTrail, setSelectedTrail] = useState<Trail | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
+  const router = useRouter();
 
   function handleSearch() {
     const q = searchQuery.trim();
-    if (q) navigate(`/trails?q=${encodeURIComponent(q)}`);
-    else navigate("/trails");
+    if (q) router.push(`/trails?q=${encodeURIComponent(q)}`);
+    else router.push("/trails");
   }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       const sessionUser = data.session?.user ?? null;
       setUser(sessionUser);
-      if (sessionUser) navigate("/dashboard", { replace: true });
+      if (sessionUser) router.replace("/dashboard");
     });
 
     const {
@@ -52,7 +42,7 @@ export default function Home() {
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [router]);
 
   function openSignUp() {
     setAuthMode("signup");
@@ -77,7 +67,7 @@ export default function Home() {
         onSwitchMode={setAuthMode}
         onAuthSuccess={(loggedInUser) => {
           setUser(loggedInUser);
-          navigate("/dashboard", { replace: true });
+          router.replace("/dashboard");
         }}
       />
 
@@ -213,4 +203,3 @@ export default function Home() {
     </div>
   );
 }
-

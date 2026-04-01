@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useMemo, useEffect } from "react";
-import { useSearchParams } from "react-router";
+import { useSearchParams } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import {
   Search,
@@ -11,7 +13,6 @@ import {
   X,
   Route,
 } from "lucide-react";
-import type { Route as RRRoute } from "./+types/trails";
 import { supabase } from "~/lib/supabase";
 import { allTrails } from "~/constants/trails";
 import {
@@ -32,17 +33,6 @@ import Footer from "~/components/layout/Footer";
 import TrailDetailModal from "~/components/trails/TrailDetailModal";
 import FilterDropdown from "~/components/ui/FilterDropdown";
 import { AuthModal, type AuthMode } from "~/components/auth/AuthModal";
-
-export function meta({}: RRRoute.MetaArgs) {
-  return [
-    { title: "Explore Trails - TrailQuest" },
-    {
-      name: "description",
-      content:
-        "Browse and discover hiking trails. Filter by difficulty, type, and distance.",
-    },
-  ];
-}
 
 function parseDistance(d: string) {
   return parseFloat(d.replace(/[^0-9.]/g, "")) || 0;
@@ -163,8 +153,8 @@ function EmptyState({ onClear }: { onClear: () => void }) {
   );
 }
 
-export default function Trails() {
-  const [searchParams] = useSearchParams();
+export default function TrailsPage() {
+  const searchParams = useSearchParams();
   const [user, setUser] = useState<User | null>(null);
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const [difficulty, setDifficulty] = useState<DifficultyFilter>(
@@ -382,4 +372,3 @@ export default function Trails() {
     </div>
   );
 }
-

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /log-activity
+Disallow: /challenges
+
+Sitemap: https://trailquest.vercel.app/sitemap.xml

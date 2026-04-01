@@ -1,4 +1,6 @@
-import { Link } from "react-router";
+"use client";
+
+import Link from "next/link";
 import { Mountain, ArrowRight } from "lucide-react";
 
 export default function NextAdventureCTA() {
@@ -16,7 +18,7 @@ export default function NextAdventureCTA() {
         </p>
       </div>
       <Link
-        to="/trails"
+        href="/trails"
         className="flex items-center justify-center gap-2 text-xs font-bold bg-primary-foreground text-primary py-2 rounded-xl hover:opacity-90 transition-opacity cursor-pointer"
       >
         Explore Trails <ArrowRight className="w-3.5 h-3.5" />

@@ -1,5 +1,6 @@
+"use client";
+
 import { useState, useMemo } from "react";
-import type { Route } from "./+types/challenges";
 import type { User } from "@supabase/supabase-js";
 import {
   LayoutGrid,
@@ -27,17 +28,6 @@ import {
   type Challenge,
   type ChallengeStatus,
 } from "~/constants/challenges";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Challenges | TrailQuest" },
-    {
-      name: "description",
-      content:
-        "Track your hiking challenges, earn badges, and climb the leaderboard.",
-    },
-  ];
-}
 
 type FilterTab = "all" | "active" | "available" | "completed" | "seasonal";
 
@@ -77,7 +67,6 @@ function ChallengesPage({ user }: { user: User }) {
   const [filter, setFilter] = useState<FilterTab>("all");
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
   const [selectedTrail, setSelectedTrail] = useState<Trail | null>(null);
-
   const [activeChallengeIds, setActiveChallengeIds] = useState<Set<number>>(
     () => new Set(CHALLENGES.filter((c) => c.status === "active").map((c) => c.id))
   );

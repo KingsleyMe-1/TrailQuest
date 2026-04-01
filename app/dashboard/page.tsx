@@ -1,5 +1,6 @@
+"use client";
+
 import { useState } from "react";
-import type { Route } from "./+types/dashboard";
 import { ProtectedRoute } from "~/components/auth/ProtectedRoute";
 import Navbar from "~/components/layout/Navbar";
 import Footer from "~/components/layout/Footer";
@@ -13,17 +14,6 @@ import CustomTrailModal from "~/components/dashboard/CustomTrailModal";
 import StatsDetailModal from "~/components/dashboard/StatsDetailModal";
 import LeaderboardModal from "~/components/dashboard/LeaderboardModal";
 import type { DashboardStat } from "~/constants/dashboard";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Dashboard - TrailQuest" },
-    {
-      name: "description",
-      content:
-        "Your personal TrailQuest dashboard — track progress, revisit trails, and plan your next adventure.",
-    },
-  ];
-}
 
 export default function Dashboard() {
   const [customTrailOpen, setCustomTrailOpen] = useState(false);
@@ -73,4 +63,3 @@ export default function Dashboard() {
     </ProtectedRoute>
   );
 }
-

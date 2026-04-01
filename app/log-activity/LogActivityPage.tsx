@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router";
+import { useSearchParams, useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import {
   ArrowLeft,
@@ -13,7 +15,6 @@ import {
   Zap,
   Footprints,
 } from "lucide-react";
-import type { Route } from "./+types/log-activity";
 import { ProtectedRoute } from "~/components/auth/ProtectedRoute";
 import Navbar from "~/components/layout/Navbar";
 import { useActivity } from "~/context/ActivityContext";
@@ -37,9 +38,9 @@ function formatTime(s: number) {
   return [h, m, sec].map((v) => String(v).padStart(2, "0")).join(":");
 }
 
-function LogActivityPage({ user }: { user: User }) {
-  const [params] = useSearchParams();
-  const navigate = useNavigate();
+function LogActivityInner({ user }: { user: User }) {
+  const params = useSearchParams();
+  const router = useRouter();
   const trailName = params.get("trail") ?? "Trail Activity";
   const location = params.get("location") ?? "";
   const coords = TRAIL_COORDS[trailName];
@@ -59,9 +60,9 @@ function LogActivityPage({ user }: { user: User }) {
   function handleBack() {
     if (status === "active" || status === "paused") {
       setMinimized(true);
-      navigate("/trails");
+      router.push("/trails");
     } else {
-      navigate(-1);
+      router.back();
     }
   }
 
@@ -212,7 +213,7 @@ function LogActivityPage({ user }: { user: User }) {
         )}
         {status === "finished" && (
           <button
-            onClick={() => { clearActivity(); navigate("/dashboard"); }}
+            onClick={() => { clearActivity(); router.push("/dashboard"); }}
             className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold text-sm py-3 rounded-xl hover:opacity-90 transition-opacity cursor-pointer"
           >
             Save Activity
@@ -223,17 +224,10 @@ function LogActivityPage({ user }: { user: User }) {
   );
 }
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Log Activity - TrailQuest" },
-    { name: "description", content: "Track your hike in real time." },
-  ];
-}
-
-export default function LogActivity() {
+export default function LogActivityPage() {
   return (
     <ProtectedRoute>
-      {(user) => <LogActivityPage user={user} />}
+      {(user) => <LogActivityInner user={user} />}
     </ProtectedRoute>
   );
 }

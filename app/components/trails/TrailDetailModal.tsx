@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router";
+import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import {
   MapPin,
@@ -74,12 +76,12 @@ export default function TrailDetailModal({ trail, onClose, user, onAuthRequired 
   const details = TRAIL_DETAILS[trail.name];
   const cfg = TRAIL_DIFFICULTY_CONFIG[trail.difficulty];
   const imgSrc = TRAIL_CARD_IMAGES[trail.name];
-  const navigate = useNavigate();
+  const router = useRouter();
   const shareRef = useRef<HTMLDivElement>(null);
 
   function handleLogActivity() {
     if (!user) { onAuthRequired(); return; }
-    navigate(`/log-activity?trail=${encodeURIComponent(trail.name)}&location=${encodeURIComponent(trail.location)}`);
+    router.push(`/log-activity?trail=${encodeURIComponent(trail.name)}&location=${encodeURIComponent(trail.location)}`);
   }
 
   function handleShare() {

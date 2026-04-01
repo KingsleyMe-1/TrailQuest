@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import type { User } from "@supabase/supabase-js";
 import {
@@ -18,7 +20,6 @@ import {
   X,
   ChevronLeft,
 } from "lucide-react";
-import type { Route } from "./+types/community";
 import { supabase } from "~/lib/supabase";
 import { AuthModal, type AuthMode } from "~/components/auth/AuthModal";
 import Navbar from "~/components/layout/Navbar";
@@ -33,17 +34,6 @@ import {
   COMMUNITY_GROUP_LEVEL_STYLES as groupLevelStyles,
   COMMUNITY_GROUPS as GROUPS,
 } from "~/constants/community";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Community - TrailQuest" },
-    {
-      name: "description",
-      content:
-        "Connect with fellow hikers, join trail groups, and discover upcoming hike events.",
-    },
-  ];
-}
 
 const ACTIVITY_BASE_LIKES: Record<number, number> = { 1: 14, 2: 7, 3: 22, 4: 11 };
 
@@ -94,13 +84,15 @@ export default function Community() {
   const [activeGroup, setActiveGroup] = useState<CommunityGroup | null>(null);
   const [likedActivities, setLikedActivities] = useState<Set<number>>(new Set());
   const [activeCommentId, setActiveCommentId] = useState<number | null>(null);
-  const [extraComments, setExtraComments] = useState<Record<number, Comment[]>>(() => {
+  // localStorage loaded in useEffect to avoid SSR crash
+  const [extraComments, setExtraComments] = useState<Record<number, Comment[]>>({});
+
+  useEffect(() => {
     try {
-      return JSON.parse(localStorage.getItem("tq_activity_comments") ?? "null") ?? {};
-    } catch {
-      return {};
-    }
-  });
+      const stored = localStorage.getItem("tq_activity_comments");
+      if (stored) setExtraComments(JSON.parse(stored));
+    } catch { }
+  }, []);
 
   useEffect(() => {
     try {
@@ -599,8 +591,8 @@ export default function Community() {
                 ))}
               </div>
             </section>
-          </div>
 
+          </div>
         </div>
       </main>
 
@@ -608,4 +600,3 @@ export default function Community() {
     </div>
   );
 }
-
