@@ -85,7 +85,7 @@ export const ABOUT_FEATURES: AboutFeature[] = [
     icon: Zap,
     title: "Blazing Fast",
     description:
-      "Built with Vite and React Router v7 SSR for sub-second navigation. Optimised images, code-split routes, and minimal JavaScript on the wire.",
+      "Built with Next.js 15 App Router and React Server Components for sub-second navigation. Optimised images, automatic code-splitting, and server-side rendering out of the box.",
     color: "text-rose-500 bg-rose-500/10",
   },
 ];
@@ -95,8 +95,8 @@ export const ABOUT_TECH_STACK: AboutTechCategory[] = [
     category: "Framework",
     icon: Layers,
     items: [
+      { name: "Next.js 15", note: "App Router + Server Components" },
       { name: "React 19", note: "UI rendering & state" },
-      { name: "React Router v7", note: "SSR + file-based routing" },
       { name: "TypeScript 5", note: "Strict type safety" },
     ],
   },
@@ -122,9 +122,9 @@ export const ABOUT_TECH_STACK: AboutTechCategory[] = [
     category: "Build & Deploy",
     icon: Server,
     items: [
-      { name: "Vite 7", note: "HMR & optimised bundling" },
+      { name: "Next.js + Turbopack", note: "Fast HMR & optimised builds" },
       { name: "Docker", note: "Multi-stage production build" },
-      { name: "Vercel", note: "Edge deployment preset" },
+      { name: "Vercel", note: "Native Next.js deployment" },
     ],
   },
   {
@@ -142,7 +142,7 @@ export const ABOUT_TECH_STACK: AboutTechCategory[] = [
     items: [
       { name: "ESLint + Prettier", note: "Code quality & formatting" },
       { name: "tsconfig paths", note: "Clean ~ import aliases" },
-      { name: "vite-tsconfig-paths", note: "Path resolution plugin" },
+      { name: "@supabase/ssr", note: "Server-side auth & cookies" },
     ],
   },
 ];
@@ -153,7 +153,7 @@ export const ABOUT_TIMELINE: AboutTimelineStep[] = [
     date: "Jan 2026",
     title: "Foundation",
     description:
-      "Project scaffolded with React Router v7, Supabase auth, and the base design system.",
+      "Project scaffolded with React Router v7, Supabase auth, and the base design system establishing core UI patterns.",
   },
   {
     version: "v0.2",
@@ -170,11 +170,18 @@ export const ABOUT_TIMELINE: AboutTimelineStep[] = [
       "Community groups, hike announcements, responsive mobile drawer, dark mode, and avatar uploads.",
   },
   {
+    version: "v0.4",
+    date: "Apr 2026",
+    title: "Next.js Migration",
+    description:
+      "Full migration from React Router v7 to Next.js 15 App Router — adding SSR, Server Components, sitemap, robots.txt, and server-side auth middleware.",
+  },
+  {
     version: "v1.0",
     date: "Coming Soon",
     title: "Full Launch",
     description:
-      "Real-time activity feeds, map integration, challenge system, and native mobile app.",
+      "Real-time activity feeds, GPS map integration, native mobile app, and offline trail data.",
     upcoming: true,
   },
 ];

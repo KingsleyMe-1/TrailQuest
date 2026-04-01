@@ -1,18 +1,19 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 let _client: SupabaseClient | null = null;
 
 function getClient(): SupabaseClient {
   if (!_client) {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     if (!supabaseUrl || !supabaseAnonKey) {
       throw new Error(
-        "Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables. " +
+        "Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables. " +
           "Copy .env.example to .env and fill in your Supabase project credentials."
       );
     }
-    _client = createClient(supabaseUrl, supabaseAnonKey);
+    _client = createBrowserClient(supabaseUrl, supabaseAnonKey);
   }
   return _client;
 }

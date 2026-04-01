@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import type { User } from "@supabase/supabase-js";
 import {
@@ -9,7 +11,6 @@ import {
   LayoutGrid,
   type LucideIcon,
 } from "lucide-react";
-import type { Route as RRRoute } from "./+types/events";
 import { supabase } from "~/lib/supabase";
 import { AuthModal, type AuthMode } from "~/components/auth/AuthModal";
 import Navbar from "~/components/layout/Navbar";
@@ -19,16 +20,6 @@ import { StaggerItem, CountUpStat } from "~/components/events/EventsShared";
 import EventDetailModal from "~/components/events/EventDetailModal";
 import EventCard from "~/components/events/EventCard";
 import FeaturedEventCard from "~/components/events/FeaturedEventCard";
-
-export function meta({}: RRRoute.MetaArgs) {
-  return [
-    { title: "Events | TrailQuest" },
-    {
-      name: "description",
-      content: "Discover upcoming trail running competitions and relive past race results. Register for TrailQuest events.",
-    },
-  ];
-}
 
 type FilterTab = "all" | "upcoming" | "past";
 

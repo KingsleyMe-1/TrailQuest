@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import {
   Camera,
@@ -29,7 +31,7 @@ function getInitials(user: User): string {
 }
 
 export function ProfileMenu({ user }: ProfileMenuProps) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(
@@ -109,7 +111,7 @@ export function ProfileMenu({ user }: ProfileMenuProps) {
   async function handleSignOut() {
     setOpen(false);
     await supabase.auth.signOut();
-    navigate("/", { replace: true });
+    router.replace("/");
   }
 
   const displayName: string =

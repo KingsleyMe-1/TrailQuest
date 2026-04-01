@@ -1,4 +1,6 @@
-import { useNavigate } from "react-router";
+"use client";
+
+import { useRouter } from "next/navigation";
 import { Pause, Play, Square, MapPin, ChevronUp } from "lucide-react";
 import { useActivity } from "~/context/ActivityContext";
 
@@ -12,13 +14,13 @@ function formatTime(s: number) {
 export default function ActivityWidget() {
   const { status, elapsed, trailName, location, minimized, setStatus, setMinimized } =
     useActivity();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   if (!minimized || (status !== "active" && status !== "paused")) return null;
 
   function handleExpand() {
     setMinimized(false);
-    navigate(
+    router.push(
       `/log-activity?trail=${encodeURIComponent(trailName)}&location=${encodeURIComponent(location)}`
     );
   }
@@ -26,7 +28,7 @@ export default function ActivityWidget() {
   function handleFinish() {
     setStatus("finished");
     setMinimized(false);
-    navigate(
+    router.push(
       `/log-activity?trail=${encodeURIComponent(trailName)}&location=${encodeURIComponent(location)}`
     );
   }

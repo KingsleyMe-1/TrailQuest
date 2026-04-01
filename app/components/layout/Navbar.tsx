@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 import {
   Menu,
@@ -38,7 +40,7 @@ export default function Navbar({ activePath, user, onSignUpClick }: Props) {
     <>
       <header className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="text-lg font-bold tracking-tight">
+          <Link href="/" className="text-lg font-bold tracking-tight">
             <span className="font-normal">Trail</span>
             <span className="text-primary">Quest</span>
           </Link>
@@ -47,7 +49,7 @@ export default function Navbar({ activePath, user, onSignUpClick }: Props) {
             {visibleLinks.map(({ label, href }) => (
               <Link
                 key={label}
-                to={href}
+                href={href}
                 className={
                   activePath === href
                     ? "text-foreground font-medium"
@@ -116,7 +118,7 @@ export default function Navbar({ activePath, user, onSignUpClick }: Props) {
             return (
               <Link
                 key={label}
-                to={href}
+                href={href}
                 onClick={() => setMobileOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
                   isActive

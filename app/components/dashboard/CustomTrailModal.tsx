@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useNavigate } from "react-router";
+import { useRouter } from "next/navigation";
 import { X, SlidersHorizontal, PlayCircle, MapPin, Mountain, Check, LocateFixed, Loader2, AlertCircle } from "lucide-react";
 
 type GeoStatus = "idle" | "loading" | "success" | "error" | "denied";
@@ -33,7 +35,7 @@ const DIFFICULTY_OPTIONS: { value: Difficulty; activeClass: string; inactiveClas
 const TYPE_OPTIONS: TrailType[] = ["Loop", "Out & Back", "Point to Point"];
 
 export default function CustomTrailModal({ isOpen, onClose }: CustomTrailModalProps) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
   const [trailInput, setTrailInput] = useState("");
@@ -134,7 +136,7 @@ export default function CustomTrailModal({ isOpen, onClose }: CustomTrailModalPr
     const params = new URLSearchParams();
     params.set("trail", name);
     params.set("location", loc);
-    navigate(`/log-activity?${params.toString()}`);
+    router.push(`/log-activity?${params.toString()}`);
     onClose();
   }
 

@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "~/lib/supabase";
 
@@ -8,7 +10,7 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [checking, setChecking] = useState(true);
 
@@ -16,7 +18,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     supabase.auth.getSession().then(({ data }) => {
       const sessionUser = data.session?.user ?? null;
       if (!sessionUser) {
-        navigate("/", { replace: true });
+        router.replace("/");
       } else {
         setUser(sessionUser);
       }
@@ -28,14 +30,14 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       const sessionUser = session?.user ?? null;
       if (!sessionUser) {
-        navigate("/", { replace: true });
+        router.replace("/");
       } else {
         setUser(sessionUser);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [router]);
 
   if (checking) {
     return (
