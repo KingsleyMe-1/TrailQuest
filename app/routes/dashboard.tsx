@@ -61,7 +61,6 @@ export default function Dashboard() {
 
                 <aside className="lg:col-span-2 flex flex-col gap-6">
                   <WeeklyGoals />
-                  <BadgesCard />
                   <NextAdventureCTA />
                 </aside>
               </div>

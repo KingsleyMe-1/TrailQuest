@@ -30,16 +30,15 @@ export const TRAIL_DIFFICULTY_CONFIG: Record<
 > = {
   Easy: {
     bar: "bg-emerald-500",
-    badge:
-      "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400",
+    badge: "bg-emerald-500 text-white",
   },
   Moderate: {
     bar: "bg-primary",
-    badge: "bg-secondary text-secondary-foreground",
+    badge: "bg-slate-700 text-white dark:bg-slate-600",
   },
   Hard: {
     bar: "bg-rose-500",
-    badge: "bg-rose-100 text-rose-600 dark:bg-rose-900/40 dark:text-rose-400",
+    badge: "bg-rose-500 text-white",
   },
 };
 

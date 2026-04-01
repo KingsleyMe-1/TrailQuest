@@ -9,8 +9,8 @@ export default function BadgesCard() {
     <div className="bg-card border border-border rounded-2xl p-5 flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-amber-500/10 flex items-center justify-center">
-            <Award className="w-3.5 h-3.5 text-amber-500" />
+          <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Award className="w-3.5 h-3.5 text-primary" />
           </div>
           <h3 className="text-sm font-bold">Badges</h3>
         </div>

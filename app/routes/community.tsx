@@ -67,7 +67,7 @@ const ACTIVITY_SEED_COMMENTS: Record<number, Comment[]> = {
 function SpotsBar({ spots, total }: { spots: number; total: number }) {
   const taken = total - spots;
   const pct = Math.round((taken / total) * 100);
-  const urgency = spots <= 5 ? "bg-rose-500" : spots <= 10 ? "bg-amber-500" : "bg-primary";
+  const urgency = "bg-primary";
   return (
     <div className="flex flex-col gap-1 mt-2">
       <div className="flex justify-between text-[11px] text-muted-foreground">
@@ -535,11 +535,11 @@ export default function Community() {
                       </span>
                       <span className={`ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
                         ev.tag === "Featured"
-                          ? "text-amber-500 bg-amber-500/10 border-amber-500/20"
+                          ? "text-primary bg-primary/10 border-primary/20"
                           : ev.tag === "Limited Spots"
-                          ? "text-rose-500 bg-rose-500/10 border-rose-500/20"
+                          ? "text-primary bg-primary/20 border-primary/30"
                           : ev.tag === "Family-Friendly"
-                          ? "text-emerald-500 bg-emerald-500/10 border-emerald-500/20"
+                          ? "text-muted-foreground bg-muted border-border"
                           : "text-primary bg-primary/10 border-primary/20"
                       }`}>
                         {ev.tag}

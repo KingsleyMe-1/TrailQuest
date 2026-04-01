@@ -19,7 +19,6 @@ import {
   TYPE_FILTERS,
   SORT_OPTIONS,
   TRAIL_CARD_IMAGES,
-  TRAIL_DIFFICULTY_BORDER,
   type DifficultyFilter,
   type SortKey,
   type TypeFilter,
@@ -80,7 +79,7 @@ function TrailCard({
   return (
     <button
       onClick={() => onSelect(trail)}
-      className={`w-full text-left border border-border border-l-4 ${TRAIL_DIFFICULTY_BORDER[trail.difficulty]} rounded-xl overflow-hidden flex flex-col bg-card shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer group focus-visible:outline-2 focus-visible:outline-ring`}
+      className="w-full text-left border border-border border-l-4 border-r-4 border-l-primary border-r-primary rounded-xl overflow-hidden flex flex-col bg-card shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer group focus-visible:outline-2 focus-visible:outline-ring"
     >
       <div className="relative w-full h-40 overflow-hidden bg-muted shrink-0">
         {imgSrc ? (
