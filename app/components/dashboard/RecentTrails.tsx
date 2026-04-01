@@ -89,7 +89,7 @@ export default function RecentTrails({ user }: { user: User }) {
           return (
             <div
               key={trail.name}
-              className="group border border-border border-t-4 border-t-primary rounded-2xl bg-card overflow-hidden hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-200 cursor-pointer"
+              className="group border border-border border-t-4 border-t-primary rounded-2xl bg-card overflow-hidden hover:border-primary hover:shadow-lg hover:shadow-primary/10 transition-all duration-200 cursor-pointer"
               onClick={() => toggleExpand(trail.name)}
             >
               {img && !imgFailed ? (
@@ -101,7 +101,6 @@ export default function RecentTrails({ user }: { user: User }) {
                     onError={() => handleImgError(trail.name)}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className={`absolute top-0 left-0 right-0 h-1 ${cfg.bar}`} />
                   <div className="absolute bottom-0 left-0 right-0 p-3 flex items-end justify-between">
                     <div>
                       <p className="font-bold text-white text-sm leading-tight">{trail.name}</p>
@@ -127,9 +126,7 @@ export default function RecentTrails({ user }: { user: User }) {
                     </div>
                   </div>
                 </div>
-              ) : (
-                <div className={`h-1 w-full ${cfg.bar}`} />
-              )}
+              ) : null}
 
               <div className="p-4">
                 {(!img || imgFailed) && (

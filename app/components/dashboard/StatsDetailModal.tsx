@@ -58,10 +58,10 @@ const WEEKLY_MILES = [
 
 const ELEVATION_PER_TRAIL = [
   { name: "Pine Ridge Loop", elevation: 820, colorClass: "bg-primary" },
-  { name: "Meadow Walk", elevation: 310, colorClass: "bg-emerald-500" },
-  { name: "Summit Crest Trail", elevation: 2840, colorClass: "bg-rose-500" },
-  { name: "Canyon Falls Path", elevation: 1540, colorClass: "bg-amber-500" },
-  { name: "Ridgeline Traverse", elevation: 2330, colorClass: "bg-sky-500" },
+  { name: "Meadow Walk", elevation: 310, colorClass: "bg-primary" },
+  { name: "Summit Crest Trail", elevation: 2840, colorClass: "bg-primary" },
+  { name: "Canyon Falls Path", elevation: 1540, colorClass: "bg-primary" },
+  { name: "Ridgeline Traverse", elevation: 2330, colorClass: "bg-primary" },
 ];
 
 const NEXT_BADGES = [
@@ -84,10 +84,10 @@ const NEXT_BADGES = [
     progress: 48,
     total: 100,
     unit: " mi",
-    textClass: "text-emerald-500",
-    bgClass: "bg-emerald-500/10",
-    borderClass: "border-emerald-500/20",
-    barClass: "bg-emerald-500",
+    textClass: "text-primary",
+    bgClass: "bg-primary/10",
+    borderClass: "border-primary/20",
+    barClass: "bg-primary",
   },
   {
     icon: Flame,
@@ -96,10 +96,10 @@ const NEXT_BADGES = [
     progress: 3,
     total: 5,
     unit: " wks",
-    textClass: "text-rose-500",
-    bgClass: "bg-rose-500/10",
-    borderClass: "border-rose-500/20",
-    barClass: "bg-rose-500",
+    textClass: "text-primary",
+    bgClass: "bg-primary/10",
+    borderClass: "border-primary/20",
+    barClass: "bg-primary",
   },
 ];
 
@@ -129,27 +129,27 @@ const STAT_META: Record<
     subtitle: "Distance covered across all hikes",
     cta: "Log Activity",
     icon: Footprints,
-    accent: "text-emerald-500",
-    gradient: "from-emerald-500/10 via-emerald-500/4 to-transparent",
-    accentBar: "bg-emerald-500",
+    accent: "text-primary",
+    gradient: "from-primary/10 via-primary/4 to-transparent",
+    accentBar: "bg-primary",
   },
   "Elevation Gained": {
     title: "Elevation Gained",
     subtitle: "Total vertical feet climbed",
     cta: "Find Hilly Trails",
     icon: TrendingUp,
-    accent: "text-amber-500",
-    gradient: "from-amber-500/10 via-amber-500/4 to-transparent",
-    accentBar: "bg-amber-500",
+    accent: "text-primary",
+    gradient: "from-primary/10 via-primary/4 to-transparent",
+    accentBar: "bg-primary",
   },
   "Badges Earned": {
     title: "Badges Earned",
     subtitle: "Achievements and milestones",
     cta: "View Challenges",
     icon: Award,
-    accent: "text-rose-500",
-    gradient: "from-rose-500/10 via-rose-500/4 to-transparent",
-    accentBar: "bg-rose-500",
+    accent: "text-primary",
+    gradient: "from-primary/10 via-primary/4 to-transparent",
+    accentBar: "bg-primary",
   },
 };
 
@@ -468,18 +468,18 @@ function TrailsCompletedContent() {
         <SummaryStatCard
           value={2}
           label="This Month"
-          textClass="text-emerald-500"
-          bgClass="bg-emerald-500/5"
-          borderClass="border-emerald-500/15"
+          textClass="text-primary"
+          bgClass="bg-primary/5"
+          borderClass="border-primary/15"
           delay={190}
         />
         <SummaryStatCard
           value={4.7}
           decimals={1}
           label="Avg Rating"
-          textClass="text-amber-500"
-          bgClass="bg-amber-500/5"
-          borderClass="border-amber-500/15"
+          textClass="text-primary"
+          bgClass="bg-primary/5"
+          borderClass="border-primary/15"
           delay={280}
         />
       </div>
@@ -557,9 +557,9 @@ function MilesHikedContent() {
           decimals={1}
           suffix=" mi"
           label="Total Miles"
-          textClass="text-emerald-500"
-          bgClass="bg-emerald-500/5"
-          borderClass="border-emerald-500/15"
+          textClass="text-primary"
+          bgClass="bg-primary/5"
+          borderClass="border-primary/15"
           delay={100}
         />
         <SummaryStatCard
@@ -576,9 +576,9 @@ function MilesHikedContent() {
           decimals={1}
           suffix=" mi"
           label="Best Week"
-          textClass="text-amber-500"
-          bgClass="bg-amber-500/5"
-          borderClass="border-amber-500/15"
+          textClass="text-primary"
+          bgClass="bg-primary/5"
+          borderClass="border-primary/15"
           delay={280}
         />
       </div>
@@ -591,17 +591,17 @@ function MilesHikedContent() {
           data={WEEKLY_MILES as Record<string, number | string>[]}
           valueKey="miles"
           labelKey="week"
-          colorClass="bg-emerald-500"
+          colorClass="bg-primary"
           maxOverride={weeklyMax}
           unit=" mi"
         />
       </StaggerItem>
 
       <StaggerItem index={1}>
-        <div className="flex items-center gap-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4">
+        <div className="flex items-center gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-4">
           <CircularProgress
             pct={48.3}
-            colorClass="text-emerald-500"
+            colorClass="text-primary"
             size={84}
             label="of 100 mi"
             valueStr="48%"
@@ -612,7 +612,7 @@ function MilesHikedContent() {
               51.7 mi remaining to earn the badge
             </p>
             <div className="mt-2.5 h-1.5 rounded-full bg-muted overflow-hidden">
-              <GoalBar pct={48.3} colorClass="bg-emerald-500" shimmer />
+              <GoalBar pct={48.3} colorClass="bg-primary" shimmer />
             </div>
           </div>
         </div>
@@ -631,7 +631,7 @@ function MilesHikedContent() {
               <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
                 <GoalBar
                   pct={(parseFloat(trail.distance) / 10) * 100}
-                  colorClass="bg-emerald-500"
+                  colorClass="bg-primary"
                 />
               </div>
               <span className="text-xs font-semibold text-foreground w-12 text-right shrink-0">
@@ -654,18 +654,18 @@ function ElevationGainedContent() {
           value={9840}
           suffix=" ft"
           label="Total Feet"
-          textClass="text-amber-500"
-          bgClass="bg-amber-500/5"
-          borderClass="border-amber-500/15"
+          textClass="text-primary"
+          bgClass="bg-primary/5"
+          borderClass="border-primary/15"
           delay={100}
         />
         <SummaryStatCard
           value={2840}
           suffix=" ft"
           label="Best Climb"
-          textClass="text-rose-500"
-          bgClass="bg-rose-500/5"
-          borderClass="border-rose-500/15"
+          textClass="text-primary"
+          bgClass="bg-primary/5"
+          borderClass="border-primary/15"
           delay={190}
         />
         <SummaryStatCard
@@ -680,19 +680,19 @@ function ElevationGainedContent() {
       </div>
 
       <StaggerItem index={0}>
-        <div className="rounded-xl border border-amber-500/25 bg-amber-500/5 p-3.5 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center shrink-0">
-            <TrendingUp className="w-5 h-5 text-amber-500" />
+        <div className="rounded-xl border border-primary/25 bg-primary/5 p-3.5 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
+            <TrendingUp className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-amber-500">
+            <p className="text-sm font-semibold text-primary">
               Personal Best
             </p>
             <p className="text-xs text-muted-foreground">
               Summit Crest Trail â€” 2,840 ft gained in one hike
             </p>
           </div>
-          <Trophy className="w-5 h-5 text-amber-400 ml-auto shrink-0" />
+          <Trophy className="w-5 h-5 text-primary ml-auto shrink-0" />
         </div>
       </StaggerItem>
 
@@ -731,8 +731,8 @@ function ElevationGainedContent() {
             {
               label: "Easy",
               count: 3,
-              textClass: "text-emerald-500",
-              bgBorder: "bg-emerald-500/10 border-emerald-500/20",
+              textClass: "text-primary",
+              bgBorder: "bg-primary/10 border-primary/20",
             },
             {
               label: "Moderate",
@@ -743,8 +743,8 @@ function ElevationGainedContent() {
             {
               label: "Hard",
               count: 3,
-              textClass: "text-rose-500",
-              bgBorder: "bg-rose-500/10 border-rose-500/20",
+              textClass: "text-primary",
+              bgBorder: "bg-primary/10 border-primary/20",
             },
           ].map((d) => (
             <div
@@ -768,25 +768,25 @@ function BadgesEarnedContent() {
         <SummaryStatCard
           value={5}
           label="Earned"
-          textClass="text-rose-500"
-          bgClass="bg-rose-500/5"
-          borderClass="border-rose-500/15"
+          textClass="text-primary"
+          bgClass="bg-primary/5"
+          borderClass="border-primary/15"
           delay={100}
         />
         <SummaryStatCard
           value={3}
           label="In Progress"
-          textClass="text-muted-foreground"
-          bgClass="bg-muted/50"
-          borderClass="border-border"
+          textClass="text-primary"
+          bgClass="bg-primary/5"
+          borderClass="border-primary/15"
           delay={190}
         />
         <SummaryStatCard
           value={8}
           label="Total"
-          textClass="text-muted-foreground"
-          bgClass="bg-muted/50"
-          borderClass="border-border"
+          textClass="text-primary"
+          bgClass="bg-primary/5"
+          borderClass="border-primary/15"
           delay={280}
         />
       </div>
