@@ -4,6 +4,14 @@ import { NextResponse, type NextRequest } from "next/server";
 const PROTECTED_PATHS = ["/dashboard", "/challenges", "/log-activity"];
 
 export async function middleware(request: NextRequest) {
+  // If env vars are missing (e.g. not yet set on Vercel), skip auth check
+  if (
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  ) {
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
