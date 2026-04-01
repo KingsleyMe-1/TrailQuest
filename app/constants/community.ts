@@ -78,7 +78,7 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     category: "Specialty",
     level: "Summit Seekers",
     icon: Flame,
-    color: "text-rose-500 bg-rose-500/10",
+    color: "text-primary bg-primary/10",
     image:
       "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
     description:
@@ -97,7 +97,7 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     category: "Beginner",
     level: "Beginner-Friendly",
     icon: Leaf,
-    color: "text-emerald-500 bg-emerald-500/10",
+    color: "text-primary bg-primary/10",
     image:
       "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80",
     description:
@@ -116,7 +116,7 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     category: "Advanced",
     level: "Elite Endurance",
     icon: Zap,
-    color: "text-amber-500 bg-amber-500/10",
+    color: "text-primary bg-primary/10",
     image:
       "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80",
     description:
@@ -135,7 +135,7 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     category: "General",
     level: "Casual Adventurers",
     icon: Activity,
-    color: "text-sky-500 bg-sky-500/10",
+    color: "text-primary bg-primary/10",
     image:
       "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=600&q=80",
     description:
@@ -154,7 +154,7 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     category: "Specialty",
     level: "Leisurely Pace",
     icon: Mountain,
-    color: "text-violet-500 bg-violet-500/10",
+    color: "text-primary bg-primary/10",
     image:
       "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=600&q=80",
     description:
@@ -289,16 +289,16 @@ export const COMMUNITY_ANNOUNCEMENTS: CommunityAnnouncement[] = [
 ];
 
 export const COMMUNITY_DIFFICULTY_STYLES: Record<string, string> = {
-  Easy: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
+  Easy: "text-muted-foreground bg-muted border-border",
   Moderate: "text-primary bg-primary/10 border-primary/20",
-  Hard: "text-rose-500 bg-rose-500/10 border-rose-500/20",
+  Hard: "text-primary bg-primary/20 border-primary/30",
 };
 
 export const COMMUNITY_GROUP_LEVEL_STYLES: Record<string, string> = {
-  "Beginner-Friendly": "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-  "Leisurely Pace": "text-teal-500 bg-teal-500/10 border-teal-500/20",
-  "All Levels Welcome": "text-sky-500 bg-sky-500/10 border-sky-500/20",
-  "Casual Adventurers": "text-blue-400 bg-blue-400/10 border-blue-400/20",
-  "Summit Seekers": "text-amber-500 bg-amber-500/10 border-amber-500/20",
-  "Elite Endurance": "text-rose-500 bg-rose-500/10 border-rose-500/20",
+  "Beginner-Friendly": "text-muted-foreground bg-muted border-border",
+  "Leisurely Pace": "text-muted-foreground bg-muted border-border",
+  "All Levels Welcome": "text-primary bg-primary/10 border-primary/20",
+  "Casual Adventurers": "text-primary bg-primary/10 border-primary/20",
+  "Summit Seekers": "text-primary bg-primary/20 border-primary/30",
+  "Elite Endurance": "text-primary bg-primary/30 border-primary/40",
 };

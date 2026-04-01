@@ -43,9 +43,9 @@ export const DASHBOARD_STATS: DashboardStat[] = [
     value: 48.3,
     suffix: " mi",
     sub: "~8 mi/week",
-    color: "text-emerald-500",
-    bg: "bg-emerald-500/10",
-    border: "border-emerald-500/20",
+    color: "text-primary",
+    bg: "bg-primary/10",
+    border: "border-primary/20",
   },
   {
     icon: TrendingUp,
@@ -53,9 +53,9 @@ export const DASHBOARD_STATS: DashboardStat[] = [
     value: 9840,
     suffix: " ft",
     sub: "Personal best",
-    color: "text-amber-500",
-    bg: "bg-amber-500/10",
-    border: "border-amber-500/20",
+    color: "text-primary",
+    bg: "bg-primary/10",
+    border: "border-primary/20",
   },
   {
     icon: Award,
@@ -63,9 +63,9 @@ export const DASHBOARD_STATS: DashboardStat[] = [
     value: 5,
     suffix: "",
     sub: "2 more available",
-    color: "text-rose-500",
-    bg: "bg-rose-500/10",
-    border: "border-rose-500/20",
+    color: "text-primary",
+    bg: "bg-primary/10",
+    border: "border-primary/20",
   },
 ];
 
@@ -78,22 +78,22 @@ export const DASHBOARD_BADGES: DashboardBadge[] = [
   {
     icon: Flame,
     label: "3-Week Streak",
-    color: "text-rose-500 bg-rose-500/10 border-rose-500/20",
+    color: "text-primary bg-primary/10 border-primary/20",
   },
   {
     icon: Zap,
     label: "Speed Hiker",
-    color: "text-amber-500 bg-amber-500/10 border-amber-500/20",
+    color: "text-primary bg-primary/10 border-primary/20",
   },
   {
     icon: Footprints,
     label: "50 mi Club",
-    color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
+    color: "text-primary bg-primary/10 border-primary/20",
   },
   {
     icon: Award,
     label: "Trailblazer",
-    color: "text-sky-500 bg-sky-500/10 border-sky-500/20",
+    color: "text-primary bg-primary/10 border-primary/20",
   },
 ];
 
@@ -119,13 +119,13 @@ export const WEEKLY_GOALS = [
     current: 1340,
     goal: 3000,
     unit: "ft",
-    color: "bg-amber-500",
+    color: "bg-primary",
   },
   {
     label: "Hikes",
     current: 1,
     goal: 3,
     unit: "hikes",
-    color: "bg-emerald-500",
+    color: "bg-primary",
   },
 ];

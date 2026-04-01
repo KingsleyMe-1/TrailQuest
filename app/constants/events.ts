@@ -58,11 +58,11 @@ export const EVENTS: TrailEvent[] = [
     difficulty: "Elite",
     terrain: ["Alpine", "Ridge", "Forest"],
     highlight: "3,800 ft single‑summit gain",
-    accentColor: "text-violet-400",
-    gradientFrom: "from-violet-950/80",
-    gradientTo: "to-indigo-900/60",
-    borderColor: "border-violet-500/30",
-    textColor: "text-violet-300",
+    accentColor: "text-primary",
+    gradientFrom: "from-primary/10",
+    gradientTo: "to-card",
+    borderColor: "border-primary/25",
+    textColor: "text-primary",
     description:
       "The Blue Ridge Ultra takes competitors through 50 kilometers of the most scenic ridgeline trails in the eastern United States. Switchback climbs, exposed ridge running, and technical single‑track make this one of the most coveted mid-Atlantic ultras. Aid stations every 8 km ensure you stay fueled across two breathtaking days.",
     categories: [
@@ -88,11 +88,11 @@ export const EVENTS: TrailEvent[] = [
     difficulty: "Advanced",
     terrain: ["Alpine", "Tundra", "Scree"],
     highlight: "Above 11,000 ft the entire course",
-    accentColor: "text-sky-400",
-    gradientFrom: "from-sky-950/80",
-    gradientTo: "to-cyan-900/60",
-    borderColor: "border-sky-500/30",
-    textColor: "text-sky-300",
+    accentColor: "text-primary",
+    gradientFrom: "from-primary/10",
+    gradientTo: "to-card",
+    borderColor: "border-primary/25",
+    textColor: "text-primary",
     description:
       "An iconic loop at altitude. The Summit Circuit puts runners on continuous alpine tundra with three technical passes and jaw-dropping 360° vistas. Expect thin air, variable weather, and the most rewarding finish line in trail running.",
     categories: [
@@ -117,11 +117,11 @@ export const EVENTS: TrailEvent[] = [
     difficulty: "Beginner",
     terrain: ["Forest", "Meadow"],
     highlight: "Natural firefly synchronization event",
-    accentColor: "text-amber-400",
-    gradientFrom: "from-amber-950/80",
-    gradientTo: "to-yellow-900/60",
-    borderColor: "border-amber-500/30",
-    textColor: "text-amber-300",
+    accentColor: "text-primary",
+    gradientFrom: "from-primary/10",
+    gradientTo: "to-card",
+    borderColor: "border-primary/25",
+    textColor: "text-primary",
     description:
       "Timed to coincide with the synchronous firefly emergence in the Smokies, the Firefly Night Run is a magical 10K through glowing forest trails after dark. Headlamps are welcome but the bioluminescent display does most of the lighting. Perfect for first-time trail runners and families.",
     categories: [
@@ -147,11 +147,11 @@ export const EVENTS: TrailEvent[] = [
     difficulty: "Advanced",
     terrain: ["Volcanic", "Glacier moraine", "Old-growth forest"],
     highlight: "Glacier moraine crossing at mile 18",
-    accentColor: "text-emerald-400",
-    gradientFrom: "from-emerald-950/80",
-    gradientTo: "to-teal-900/60",
-    borderColor: "border-emerald-500/30",
-    textColor: "text-emerald-300",
+    accentColor: "text-primary",
+    gradientFrom: "from-primary/10",
+    gradientTo: "to-card",
+    borderColor: "border-primary/25",
+    textColor: "text-primary",
     description:
       "A full marathon distance across some of the Pacific Northwest's most dramatic volcanic terrain. From lush old-growth forest to stark glacier moraines, the Alpine Peaks Marathon is a study in contrasts — and endurance. A true bucket-list race for serious trail runners.",
     categories: [
@@ -176,11 +176,11 @@ export const EVENTS: TrailEvent[] = [
     difficulty: "Intermediate",
     terrain: ["Alpine", "Wildflower meadow", "Pine forest"],
     highlight: "Peak wildflower bloom corridor",
-    accentColor: "text-rose-400",
-    gradientFrom: "from-rose-950/80",
-    gradientTo: "to-pink-900/60",
-    borderColor: "border-rose-500/30",
-    textColor: "text-rose-300",
+    accentColor: "text-primary",
+    gradientFrom: "from-primary/10",
+    gradientTo: "to-card",
+    borderColor: "border-primary/25",
+    textColor: "text-primary",
     description:
       "Connecting two iconic ridges of the San Juans, this 25K is the crown jewel of Colorado's summer trail calendar. The course traverses peak wildflower blooms in late July/early August, and the ridge-to-ridge traverse offers panoramic views that simply can't be captured in photos.",
     categories: [
@@ -204,11 +204,11 @@ export const EVENTS: TrailEvent[] = [
     difficulty: "Beginner",
     terrain: ["Valley floor", "River trail", "Meadow"],
     highlight: "Yosemite Falls backdrop at the finish",
-    accentColor: "text-teal-400",
-    gradientFrom: "from-teal-950/80",
-    gradientTo: "to-cyan-900/60",
-    borderColor: "border-teal-500/30",
-    textColor: "text-teal-300",
+    accentColor: "text-primary",
+    gradientFrom: "from-primary/10",
+    gradientTo: "to-card",
+    borderColor: "border-primary/25",
+    textColor: "text-primary",
     description:
       "An accessible but unforgettable race on the flat valley floor beneath El Capitan and Half Dome. The Valley Floor Challenge is ideal for runners new to trail racing who want a world-class setting without punishing elevation.",
     categories: [
@@ -240,11 +240,11 @@ export const EVENTS: TrailEvent[] = [
     difficulty: "Intermediate",
     terrain: ["Snow pack", "Pine forest", "Lakeside"],
     highlight: "Frozen Lake Tahoe shoreline segment",
-    accentColor: "text-indigo-400",
-    gradientFrom: "from-indigo-950/80",
-    gradientTo: "to-blue-900/60",
-    borderColor: "border-indigo-500/30",
-    textColor: "text-indigo-300",
+    accentColor: "text-primary",
+    gradientFrom: "from-primary/10",
+    gradientTo: "to-card",
+    borderColor: "border-primary/25",
+    textColor: "text-primary",
     description:
       "One of the rare winter trail races that embraces the season rather than fighting it. Micro-spikes required, snowshoes optional. The frozen Tahoe shoreline segment is genuinely unlike anything else in trail running.",
     categories: [
@@ -275,11 +275,11 @@ export const EVENTS: TrailEvent[] = [
     difficulty: "Advanced",
     terrain: ["Volcanic descent", "Forest single-track"],
     highlight: "5,000 ft of descent in 30K",
-    accentColor: "text-orange-400",
-    gradientFrom: "from-orange-950/80",
-    gradientTo: "to-red-900/60",
-    borderColor: "border-orange-500/30",
-    textColor: "text-orange-300",
+    accentColor: "text-primary",
+    gradientFrom: "from-primary/10",
+    gradientTo: "to-card",
+    borderColor: "border-primary/25",
+    textColor: "text-primary",
     description:
       "The Cascade Descent is a point-to-point race starting at the Mt. Hood summit trailhead and diving 5,000 feet into the forest below. Quad-burning descents, rooty technical single-track, and a riverside finish make it one of the most memorable races on the West Coast calendar.",
     categories: [
@@ -309,8 +309,8 @@ export const EVENT_STATS = {
 };
 
 export const DIFFICULTY_STYLES: Record<EventDifficulty, string> = {
-  Beginner: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-  Intermediate: "bg-sky-500/15 text-sky-400 border-sky-500/30",
-  Advanced: "bg-amber-500/15 text-amber-400 border-amber-500/30",
-  Elite: "bg-violet-500/15 text-violet-400 border-violet-500/30",
+  Beginner: "bg-muted text-muted-foreground border-border",
+  Intermediate: "bg-primary/10 text-primary border-primary/20",
+  Advanced: "bg-primary/20 text-primary border-primary/30",
+  Elite: "bg-primary text-primary-foreground border-primary",
 };

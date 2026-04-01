@@ -10,7 +10,7 @@ import Footer from "~/components/layout/Footer";
 import { HOME_TRAILS } from "~/constants/home";
 import TrailDetailModal from "~/components/trails/TrailDetailModal";
 import { allTrails, type Trail } from "~/constants/trails";
-import { TRAIL_CARD_IMAGES, TRAIL_DIFFICULTY_BORDER } from "~/constants/trails-page";
+import { TRAIL_CARD_IMAGES } from "~/constants/trails-page";
 import { TRAIL_DIFFICULTY_CONFIG } from "~/constants/trail-detail";
 
 export function meta({}: Route.MetaArgs) {
@@ -130,7 +130,7 @@ export default function Home() {
                 <button
                   key={trail.name}
                   onClick={() => openTrail(trail.name)}
-                  className={`w-full text-left border border-border border-l-4 ${TRAIL_DIFFICULTY_BORDER[trail.difficulty]} rounded-xl overflow-hidden flex flex-col bg-card shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer group focus-visible:outline-2 focus-visible:outline-ring`}
+                  className="w-full text-left border border-border border-l-4 border-r-4 border-l-primary border-r-primary rounded-xl overflow-hidden flex flex-col bg-card shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer group focus-visible:outline-2 focus-visible:outline-ring"
                 >
                   <div className="relative w-full h-40 overflow-hidden bg-muted shrink-0">
                     {imgSrc ? (

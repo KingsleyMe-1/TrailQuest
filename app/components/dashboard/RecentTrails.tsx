@@ -89,7 +89,7 @@ export default function RecentTrails({ user }: { user: User }) {
           return (
             <div
               key={trail.name}
-              className="group border border-border rounded-2xl bg-card overflow-hidden hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-200 cursor-pointer"
+              className="group border border-border border-t-4 border-t-primary rounded-2xl bg-card overflow-hidden hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-200 cursor-pointer"
               onClick={() => toggleExpand(trail.name)}
             >
               {img && !imgFailed ? (
